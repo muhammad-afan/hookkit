@@ -19,6 +19,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
+      # dist/ must exist before the tests run: test/runtime/module-format.test.ts does a
+      # real `npm pack` + install + import round-trip against the built output, not source.
+      - run: pnpm build
       - run: pnpm test -- --coverage
       - run: pnpm test:types
 

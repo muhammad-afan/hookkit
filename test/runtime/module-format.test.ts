@@ -14,6 +14,17 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
+/**
+ * `npm pack --json`'s top-level shape changed between major npm versions: npm 10/11
+ * output an array (`[{ filename, ... }]`); npm 12+ outputs an object keyed by package
+ * name (`{ hookkit: { filename, ... } }`). Handle both rather than assuming one.
+ */
+function firstPackResult(jsonOutput: string): { filename: string } {
+  const parsed: unknown = JSON.parse(jsonOutput);
+  const result = Array.isArray(parsed) ? parsed[0] : Object.values(parsed as object)[0];
+  return result as { filename: string };
+}
+
 // Subpaths that are pure WebCrypto or only *type-only* import their peer package
 // (express/fastify/ioredis — all compiled away by verbatimModuleSyntax, verified by
 // grepping dist/ for a lingering runtime import). These must resolve with ZERO peer
@@ -51,7 +62,7 @@ let tarballPath: string;
 
 beforeAll(() => {
   const packOutput = execFileSync('npm', ['pack', '--json'], { cwd: ROOT }).toString();
-  const [{ filename }] = JSON.parse(packOutput) as [{ filename: string }];
+  const { filename } = firstPackResult(packOutput);
   tarballPath = path.join(ROOT, filename);
 
   peerlessDir = mkdtempSync(path.join(tmpdir(), 'hookkit-pack-peerless-'));
