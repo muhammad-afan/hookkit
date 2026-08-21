@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        See `CLAUDE.md` §3 for the currently-supported and roadmapped providers, and
+        See the README's "Supported providers" table for what's currently supported, and
         `CONTRIBUTING.md`'s "Adding a provider" section if you'd like to submit the
         adapter yourself — it's the highest-leverage contribution path into hookforge.
 
@@ -28,7 +28,7 @@ body:
   - type: dropdown
     id: shape
     attributes:
-      label: Signature shape (if you know it — see CLAUDE.md §3, D4)
+      label: Signature shape (if you know it)
       description: |
         hookforge's adapter interface is deliberately shaped around six distinct signing
         patterns. Knowing which one applies helps scope the work correctly from the

@@ -4,9 +4,9 @@
 // (after `pnpm build`; see .github/workflows/ci.yml's `runtimes` job).
 //
 // This is also where Discord's Ed25519 path gets verified outside Node — Bun has
-// historically lagged on Ed25519 WebCrypto support (see CLAUDE.md §3.6), so this is a real
-// compatibility check, not a formality. It also exercises the current 60s tolerance default
-// (CLAUDE.md §3.6 / src/providers/discord.ts) rather than assuming the old 300s value.
+// historically lagged on Ed25519 WebCrypto support, so this is a real compatibility
+// check, not a formality. It also exercises the current 60s tolerance default
+// (src/providers/discord.ts) rather than assuming the old 300s value.
 import { expect, test } from 'bun:test';
 import { toWebhookRequest } from '../../dist/index.js';
 import { discord, generateDiscordTestKeyPair } from '../../dist/providers/discord.js';

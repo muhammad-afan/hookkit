@@ -28,9 +28,11 @@ Docker-less environment, not a sign something else is broken.
 
 ## Dependency minimalism is a policy, not a preference
 
-Core (`hookforge`) and every provider adapter ship with **zero runtime dependencies** — see
-`CLAUDE.md` §0/§10 for why this is a deliberate competitive and security position, not an
-accident. Concretely:
+Core (`hookforge`) and every provider adapter ship with **zero runtime dependencies**. This
+is a deliberate competitive and security position, not an accident — every transitive
+dependency is attack surface in a library whose entire job is verifying signatures, and it's
+also a genuine adoption argument against competitors that don't make the same claim.
+Concretely:
 
 - **Adding a runtime `dependency` requires a maintainer discussion first.** Open an issue
   before writing the code, not after. This applies even to small, well-regarded packages —
@@ -44,14 +46,14 @@ accident. Concretely:
 ## Adding a provider adapter
 
 This is the highest-leverage contribution path — the generic adapter
-(`createGenericAdapter`, see `CLAUDE.md` §3.9) lets anyone self-serve an unsupported
-provider immediately, but a first-class adapter is what makes it show up in the supported
-providers table and get the full test/fixture treatment. Checklist:
+(`createGenericAdapter`) lets anyone self-serve an unsupported provider immediately, but a
+first-class adapter is what makes it show up in the supported providers table and get the
+full test/fixture treatment. Checklist:
 
-1. **Read `CLAUDE.md` §3 and `hookkit-testing.md` first.** Identify which of the six
-   signature shapes (§3, D4) your provider uses — body-only HMAC, timestamped HMAC,
-   URL-bound HMAC, asymmetric, async network verify, or non-body signing. This determines
-   the adapter's shape before you write any code.
+1. **Identify which of the six signature shapes your provider uses first**: body-only
+   HMAC, timestamped HMAC, URL-bound HMAC, asymmetric, async network verify, or non-body
+   signing (see the existing adapters in `src/providers/` for a working example of each
+   shape). This determines the adapter's shape before you write any code.
 2. **Adapter file**: `src/providers/<name>.ts`, implementing the `ProviderAdapter`
    interface (`verify`, `extractEventId`, `requiredHeaders`, `defaultToleranceSeconds`,
    and `sign` for `createTestSigner` support — see any existing adapter for the pattern).
@@ -64,9 +66,8 @@ providers table and get the full test/fixture treatment. Checklist:
 4. **The full conformance suite.** Run your adapter through `runAdapterConformance()` (see
    `test/shared/conformance.ts` and any existing adapter test file for how it's wired up)
    — this is the shared baseline test suite every adapter must pass. Then add
-   provider-specific tests for whatever `hookkit-testing.md` calls out as unique to this
-   provider (key derivation quirks, multiple signature values, unusual tolerance handling,
-   etc.).
+   provider-specific tests for whatever is unique to this provider's scheme (key
+   derivation quirks, multiple signature values, unusual tolerance handling, etc.).
 5. **A docs table row.** Add the provider to the "Supported providers" table in
    `README.md` — header(s), algorithm, tolerance, event ID field — matching the format
    already there.

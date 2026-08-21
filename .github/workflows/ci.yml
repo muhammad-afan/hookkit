@@ -27,8 +27,8 @@ jobs:
 
   # Bun and Deno smoke tests against the BUILT package (dist/), not source — this is the
   # only place Discord's Ed25519 path gets checked outside Node. Bun has historically lagged
-  # on Ed25519 WebCrypto support (CLAUDE.md §3.6), so this is a real compatibility gate, not
-  # a formality. See test/runtime/smoke.test.ts and test/runtime/smoke.deno.ts.
+  # on Ed25519 WebCrypto support, so this is a real compatibility gate, not a formality.
+  # See test/runtime/smoke.test.ts and test/runtime/smoke.deno.ts.
   runtimes:
     runs-on: ubuntu-latest
     steps:

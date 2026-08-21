@@ -3,9 +3,9 @@ on:
   push:
     branches: [main]
 
-# NOTE (see CLAUDE.md §13): classic npm tokens were permanently revoked in late
-# 2025/early 2026 and can no longer be created — the NPM_TOKEN-in-secrets pattern most
-# tutorials show is dead. This workflow uses Trusted Publishing via OIDC instead: GitHub
+# NOTE: classic npm tokens were permanently revoked in late 2025/early 2026 and can no
+# longer be created — the NPM_TOKEN-in-secrets pattern most tutorials show is dead.
+# This workflow uses Trusted Publishing via OIDC instead: GitHub
 # Actions proves its identity to npm directly, no stored secret exists, and there is
 # deliberately no NPM_TOKEN anywhere in this file or in the repo's secrets.
 #

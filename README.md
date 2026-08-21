@@ -13,8 +13,9 @@ Workers, Vercel Edge.
 > Shopify, Standard Webhooks, Slack, Discord, Twilio, Paddle, and the generic adapter),
 > the memory/Redis/Prisma idempotency stores, BullMQ queue handoff, multi-provider
 > routing, and the Express/Fastify/NestJS/Next.js framework integrations are implemented
-> and tested (422 tests). Not yet published to npm — see `CLAUDE.md` §17 for what's left
-> before a tagged 1.0.
+> and tested (422 tests). Not yet published to npm — a docs site, real recorded
+> provider fixtures, and a production deployment are the main things left before a
+> tagged 1.0.
 
 ## The problem
 
@@ -262,8 +263,7 @@ construction, so a wide window would only widen the replay door for no benefit. 
 with `toleranceSeconds` like any other adapter if you need to. See the doc comment on
 `discord` in `src/providers/discord.ts` for the full rationale.
 
-PayPal (async network verification) is still on the roadmap — see `CLAUDE.md` in this
-repo for the full spec and provider details.
+PayPal (async network verification) is still on the roadmap.
 
 ## Idempotency
 
