@@ -1,0 +1,308 @@
+{
+  "name": "hookkit",
+  "version": "0.1.0",
+  "description": "Verify, deduplicate, and process inbound webhooks. Stripe, Shopify, GitHub, Clerk and more. Zero dependencies, works everywhere.",
+  "keywords": [
+    "webhook",
+    "webhooks",
+    "stripe",
+    "shopify",
+    "github",
+    "clerk",
+    "svix",
+    "signature",
+    "hmac",
+    "idempotency",
+    "nestjs",
+    "nextjs",
+    "verification"
+  ],
+  "license": "MIT",
+  "author": "Muhammad Afan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhammad-afan/hookkit.git"
+  },
+  "homepage": "https://hookkit.dev",
+  "bugs": {
+    "url": "https://github.com/muhammad-afan/hookkit/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./stripe": {
+      "import": {
+        "types": "./dist/providers/stripe.d.ts",
+        "default": "./dist/providers/stripe.js"
+      },
+      "require": {
+        "types": "./dist/providers/stripe.d.cts",
+        "default": "./dist/providers/stripe.cjs"
+      }
+    },
+    "./shopify": {
+      "import": {
+        "types": "./dist/providers/shopify.d.ts",
+        "default": "./dist/providers/shopify.js"
+      },
+      "require": {
+        "types": "./dist/providers/shopify.d.cts",
+        "default": "./dist/providers/shopify.cjs"
+      }
+    },
+    "./github": {
+      "import": {
+        "types": "./dist/providers/github.d.ts",
+        "default": "./dist/providers/github.js"
+      },
+      "require": {
+        "types": "./dist/providers/github.d.cts",
+        "default": "./dist/providers/github.cjs"
+      }
+    },
+    "./standard": {
+      "import": {
+        "types": "./dist/providers/standard.d.ts",
+        "default": "./dist/providers/standard.js"
+      },
+      "require": {
+        "types": "./dist/providers/standard.d.cts",
+        "default": "./dist/providers/standard.cjs"
+      }
+    },
+    "./slack": {
+      "import": {
+        "types": "./dist/providers/slack.d.ts",
+        "default": "./dist/providers/slack.js"
+      },
+      "require": {
+        "types": "./dist/providers/slack.d.cts",
+        "default": "./dist/providers/slack.cjs"
+      }
+    },
+    "./discord": {
+      "import": {
+        "types": "./dist/providers/discord.d.ts",
+        "default": "./dist/providers/discord.js"
+      },
+      "require": {
+        "types": "./dist/providers/discord.d.cts",
+        "default": "./dist/providers/discord.cjs"
+      }
+    },
+    "./twilio": {
+      "import": {
+        "types": "./dist/providers/twilio.d.ts",
+        "default": "./dist/providers/twilio.js"
+      },
+      "require": {
+        "types": "./dist/providers/twilio.d.cts",
+        "default": "./dist/providers/twilio.cjs"
+      }
+    },
+    "./paddle": {
+      "import": {
+        "types": "./dist/providers/paddle.d.ts",
+        "default": "./dist/providers/paddle.js"
+      },
+      "require": {
+        "types": "./dist/providers/paddle.d.cts",
+        "default": "./dist/providers/paddle.cjs"
+      }
+    },
+    "./generic": {
+      "import": {
+        "types": "./dist/providers/generic.d.ts",
+        "default": "./dist/providers/generic.js"
+      },
+      "require": {
+        "types": "./dist/providers/generic.d.cts",
+        "default": "./dist/providers/generic.cjs"
+      }
+    },
+    "./express": {
+      "import": {
+        "types": "./dist/adapters/express.d.ts",
+        "default": "./dist/adapters/express.js"
+      },
+      "require": {
+        "types": "./dist/adapters/express.d.cts",
+        "default": "./dist/adapters/express.cjs"
+      }
+    },
+    "./next": {
+      "import": {
+        "types": "./dist/adapters/next.d.ts",
+        "default": "./dist/adapters/next.js"
+      },
+      "require": {
+        "types": "./dist/adapters/next.d.cts",
+        "default": "./dist/adapters/next.cjs"
+      }
+    },
+    "./stores/memory": {
+      "import": {
+        "types": "./dist/stores/memory.d.ts",
+        "default": "./dist/stores/memory.js"
+      },
+      "require": {
+        "types": "./dist/stores/memory.d.cts",
+        "default": "./dist/stores/memory.cjs"
+      }
+    },
+    "./stores/redis": {
+      "import": {
+        "types": "./dist/stores/redis.d.ts",
+        "default": "./dist/stores/redis.js"
+      },
+      "require": {
+        "types": "./dist/stores/redis.d.cts",
+        "default": "./dist/stores/redis.cjs"
+      }
+    },
+    "./stores/prisma": {
+      "import": {
+        "types": "./dist/stores/prisma.d.ts",
+        "default": "./dist/stores/prisma.js"
+      },
+      "require": {
+        "types": "./dist/stores/prisma.d.cts",
+        "default": "./dist/stores/prisma.cjs"
+      }
+    },
+    "./fastify": {
+      "import": {
+        "types": "./dist/adapters/fastify.d.ts",
+        "default": "./dist/adapters/fastify.js"
+      },
+      "require": {
+        "types": "./dist/adapters/fastify.d.cts",
+        "default": "./dist/adapters/fastify.cjs"
+      }
+    },
+    "./queues/bullmq": {
+      "import": {
+        "types": "./dist/queues/bullmq.d.ts",
+        "default": "./dist/queues/bullmq.js"
+      },
+      "require": {
+        "types": "./dist/queues/bullmq.d.cts",
+        "default": "./dist/queues/bullmq.cjs"
+      }
+    },
+    "./nestjs": {
+      "import": {
+        "types": "./dist/adapters/nestjs/index.d.ts",
+        "default": "./dist/adapters/nestjs/index.js"
+      },
+      "require": {
+        "types": "./dist/adapters/nestjs/index.d.cts",
+        "default": "./dist/adapters/nestjs/index.cjs"
+      }
+    },
+    "./testing": {
+      "import": {
+        "types": "./dist/testing/index.d.ts",
+        "default": "./dist/testing/index.js"
+      },
+      "require": {
+        "types": "./dist/testing/index.d.cts",
+        "default": "./dist/testing/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "@nestjs/common": ">=10",
+    "@nestjs/core": ">=10",
+    "@prisma/client": ">=5",
+    "bullmq": ">=5",
+    "express": ">=4",
+    "fastify": ">=4",
+    "ioredis": ">=5",
+    "rxjs": ">=7"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    },
+    "@nestjs/core": {
+      "optional": true
+    },
+    "@prisma/client": {
+      "optional": true
+    },
+    "bullmq": {
+      "optional": true
+    },
+    "express": {
+      "optional": true
+    },
+    "fastify": {
+      "optional": true
+    },
+    "ioredis": {
+      "optional": true
+    },
+    "rxjs": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run",
+    "test:types": "vitest run --typecheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "size": "size-limit && node scripts/check-package-size.mjs",
+    "prepublishOnly": "npm run build && npm run test && npx publint --strict && npx @arethetypeswrong/cli --pack . --profile node16",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@changesets/changelog-github": "^1.0.0",
+    "@changesets/cli": "^3.0.1",
+    "@fastify/middie": "^9.3.3",
+    "@nestjs/common": "^11.2.1",
+    "@nestjs/core": "^11.2.1",
+    "@nestjs/platform-express": "^11.2.1",
+    "@nestjs/platform-fastify": "^11.2.1",
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "@size-limit/preset-small-lib": "^13.0.3",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.0",
+    "@types/pg": "^8.23.1",
+    "@vitest/coverage-v8": "^3.2.7",
+    "bullmq": "^6.1.2",
+    "express": "^5.0.0",
+    "fast-check": "^4.9.0",
+    "fastify": "^5.12.1",
+    "ioredis": "^6.0.0",
+    "pg": "^8.23.0",
+    "prisma": "^7.9.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "size-limit": "^13.0.3",
+    "testcontainers": "^12.1.0",
+    "tsdown": "^0.9.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.0"
+  }
+}

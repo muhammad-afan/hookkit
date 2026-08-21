@@ -1,0 +1,59 @@
+name: Provider request
+description: Ask for (or propose) a new provider adapter.
+labels: [provider-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        See `CLAUDE.md` §3 for the currently-supported and roadmapped providers, and
+        `CONTRIBUTING.md`'s "Adding a provider" section if you'd like to submit the
+        adapter yourself — it's the highest-leverage contribution path into hookkit.
+
+        In the meantime, `createGenericAdapter` (`hookkit/generic`) can usually cover a
+        missing provider immediately without waiting for a release — worth checking
+        first.
+  - type: input
+    id: provider
+    attributes:
+      label: Provider name
+      placeholder: e.g. Vercel, Linear, SendGrid
+    validations:
+      required: true
+  - type: input
+    id: docs
+    attributes:
+      label: Link to the provider's webhook signature verification docs
+    validations:
+      required: true
+  - type: dropdown
+    id: shape
+    attributes:
+      label: Signature shape (if you know it — see CLAUDE.md §3, D4)
+      description: |
+        hookkit's adapter interface is deliberately shaped around six distinct signing
+        patterns. Knowing which one applies helps scope the work correctly from the
+        start.
+      options:
+        - "A. Body-only HMAC (e.g. GitHub, Shopify)"
+        - "B. Timestamped HMAC (e.g. Stripe, Slack)"
+        - "C. URL-bound HMAC (e.g. Twilio, Square)"
+        - "D. Asymmetric / public-key (e.g. Discord, SendGrid)"
+        - "E. Async network verify (e.g. PayPal)"
+        - "F. Non-body signing (e.g. Mailgun)"
+        - Not sure
+    validations:
+      required: false
+  - type: textarea
+    id: usecase
+    attributes:
+      label: What are you building?
+      description: Helps prioritize — real usage beats a guess at demand.
+    validations:
+      required: false
+  - type: checkboxes
+    id: willing
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd be willing to implement this adapter myself, following CONTRIBUTING.md's checklist.
+          required: false

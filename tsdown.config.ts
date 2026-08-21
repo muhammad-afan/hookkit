@@ -1,0 +1,30 @@
+import { defineConfig } from 'tsdown';
+
+export default defineConfig({
+  entry: [
+    'src/index.ts',
+    'src/providers/stripe.ts',
+    'src/providers/shopify.ts',
+    'src/providers/github.ts',
+    'src/providers/standard.ts',
+    'src/providers/slack.ts',
+    'src/providers/discord.ts',
+    'src/providers/twilio.ts',
+    'src/providers/paddle.ts',
+    'src/providers/generic.ts',
+    'src/stores/memory.ts',
+    'src/stores/redis.ts',
+    'src/stores/prisma.ts',
+    'src/queues/bullmq.ts',
+    'src/adapters/express.ts',
+    'src/adapters/next.ts',
+    'src/adapters/fastify.ts',
+    'src/adapters/nestjs/index.ts',
+    'src/testing/index.ts',
+  ],
+  format: ['esm', 'cjs'],
+  dts: true,
+  clean: true,
+  treeshake: true,
+  target: 'node22',
+});

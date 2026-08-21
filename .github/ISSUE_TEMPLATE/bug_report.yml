@@ -1,0 +1,70 @@
+name: Bug report
+description: Something in hookkit isn't behaving the way the docs say it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. If this is a **security** issue
+        (e.g. a way to forge a valid signature, bypass a replay check, or defeat
+        idempotency), please do not file it here — use
+        [Private Vulnerability Reporting](https://github.com/muhammad-afan/hookkit/security/advisories/new)
+        instead. See `SECURITY.md`.
+  - type: input
+    id: version
+    attributes:
+      label: hookkit version
+      description: Output of `npm ls hookkit` or the version in your package.json.
+      placeholder: '0.1.0'
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      multiple: true
+      options:
+        - Core (createReceiver / verify / errors)
+        - Provider adapter (Stripe, GitHub, Shopify, Standard Webhooks, Slack, Discord, Twilio, Paddle, generic)
+        - Idempotency store (memory, Redis, Prisma)
+        - Queue handoff (BullMQ)
+        - Framework adapter (Express, Fastify, NestJS, Next.js, Hono, Lambda, node:http)
+        - Testing utilities (createTestSigner)
+        - Types / TypeScript
+        - Docs
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: runtime
+    attributes:
+      label: Runtime
+      description: Node version (or Bun/Deno/Cloudflare Workers/Vercel Edge version), OS, and framework version if relevant.
+      placeholder: |
+        Node 22.13.0, Express 5.0.0, Ubuntu 24.04
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the exact error message and `error.code` if hookkit threw or returned a `HookkitError`.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: |
+        A short code sample is by far the fastest way to get this fixed. If you can
+        express it as a failing test using `createTestSigner`, even better —
+        see the README's "Testing your webhooks" section.
+      render: ts
+    validations:
+      required: true

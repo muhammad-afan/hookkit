@@ -1,0 +1,18 @@
+// Test-only fixture. Mirrors exactly the model documented in src/stores/prisma.ts's
+// doc comment — this schema exists solely to prove prismaStore() behaves correctly
+// against a real Postgres + real generated Prisma Client, not a fake delegate.
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ProcessedWebhookEvent {
+  key       String   @id
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}

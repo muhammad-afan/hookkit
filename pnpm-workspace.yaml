@@ -1,0 +1,10 @@
+allowBuilds:
+  '@biomejs/biome': true
+  '@prisma/engines': true
+  cpu-features: true
+  esbuild: true
+  msgpackr-extract: true
+  prisma: true
+  protobufjs: true
+  rolldown: true
+  ssh2: true

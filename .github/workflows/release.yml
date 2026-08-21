@@ -1,0 +1,53 @@
+name: Release
+on:
+  push:
+    branches: [main]
+
+# NOTE (see CLAUDE.md §13): classic npm tokens were permanently revoked in late
+# 2025/early 2026 and can no longer be created — the NPM_TOKEN-in-secrets pattern most
+# tutorials show is dead. This workflow uses Trusted Publishing via OIDC instead: GitHub
+# Actions proves its identity to npm directly, no stored secret exists, and there is
+# deliberately no NPM_TOKEN anywhere in this file or in the repo's secrets.
+#
+# Two one-time manual steps this workflow depends on, which only a maintainer can do:
+#   1. The FIRST publish of this package must be done manually from a local machine
+#      (`npm publish`, logged in as muhammad-afan). Trusted Publishing can only be
+#      configured on npm for a package that already exists — this workflow cannot
+#      bootstrap it.
+#   2. On npmjs.com, under this package's Settings → Trusted Publisher, configure GitHub
+#      Actions as a trusted publisher for this exact repo + workflow file
+#      (muhammad-afan/hookkit, .github/workflows/release.yml). Provenance validation
+#      compares `repository.url` in package.json against the GitHub repo URL
+#      case-sensitively — they must match exactly or publishing fails with a cryptic 422.
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write # REQUIRED for OIDC + provenance — do not remove.
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+      # Trusted Publishing needs npm >= 11.5.1; the version bundled with a given Node
+      # release can lag behind that.
+      - run: npm install -g npm@latest
+      - run: pnpm install --frozen-lockfile
+      # Safety net: never let a broken build reach the publish step, even though branch
+      # protection on main should already have gated this via ci.yml.
+      - run: pnpm build
+      - run: pnpm test
+      - uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
+        with:
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # No NPM_TOKEN. An empty-string NODE_AUTH_TOKEN would still count as a value and
+          # block the OIDC fallback, so it must stay completely unset, not just empty.

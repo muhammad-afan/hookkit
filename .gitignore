@@ -1,0 +1,20 @@
+node_modules
+dist
+coverage
+*.log
+.DS_Store
+test/fixtures/prisma/generated
+
+# Environment / secrets — never commit these
+.env
+.env.*
+!.env.example
+
+# testcontainers / Docker local artifacts
+.testcontainers.properties
+docker-compose.override.yml
+
+# IDE / OS
+.vscode
+.idea
+Thumbs.db
