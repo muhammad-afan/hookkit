@@ -19,6 +19,8 @@ runAdapterConformance(github, loadFixture('github', 'pull-request-opened'), {
   ],
 });
 
+runAdapterConformance(github, loadFixture('github', 'push'));
+
 describe('github adapter', () => {
   it('accepts a validly signed request', async () => {
     const signer = createTestSigner(github, CREDS);
