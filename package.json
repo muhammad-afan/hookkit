@@ -28,6 +28,7 @@
     "url": "https://github.com/muhammad-afan/hookkit/issues"
   },
   "type": "module",
+  "packageManager": "pnpm@11.10.0",
   "sideEffects": false,
   "engines": {
     "node": ">=22.12.0"
