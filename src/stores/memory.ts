@@ -8,7 +8,7 @@ import type { IdempotencyStore } from '../core/types.js';
  *
  * This is dev / single-instance only. State lives in process memory: it is lost on
  * restart and is NOT shared across multiple instances (e.g. multiple ECS tasks or
- * serverless invocations). Use `hookkit/stores/redis` or `hookkit/stores/prisma` for
+ * serverless invocations). Use `hookforge/stores/redis` or `hookforge/stores/prisma` for
  * anything running more than one instance.
  */
 export function memoryStore(): IdempotencyStore {

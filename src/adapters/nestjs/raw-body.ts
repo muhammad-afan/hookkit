@@ -19,7 +19,7 @@ export function assertRawBody(
   if (Buffer.isBuffer(req.rawBody)) return;
 
   throw new MissingRawBodyError(
-    `hookkit: req.rawBody was not available on this NestJS request. Two documented causes: (1) \`rawBody: true\` was passed to NestFactory.create() but \`bodyParser: false\` was also set — raw-body capture requires the built-in body parser to remain enabled. (2) a custom \`app.use(json({ limit: '...' }))\` (or similar) was registered AFTER enabling \`rawBody: true\`, which overrides the parser that captures it — see https://github.com/nestjs/nest/issues/10471. Fix: call NestFactory.create(AppModule, { rawBody: true }) without bodyParser:false, and register any custom body-size-limit middleware BEFORE rawBody is enabled — or use hookkit's applyRawBodyOnlyTo() escape hatch to scope raw-body capture to just your webhook routes. See ${DOCS_URL}`,
+    `hookforge: req.rawBody was not available on this NestJS request. Two documented causes: (1) \`rawBody: true\` was passed to NestFactory.create() but \`bodyParser: false\` was also set — raw-body capture requires the built-in body parser to remain enabled. (2) a custom \`app.use(json({ limit: '...' }))\` (or similar) was registered AFTER enabling \`rawBody: true\`, which overrides the parser that captures it — see https://github.com/nestjs/nest/issues/10471. Fix: call NestFactory.create(AppModule, { rawBody: true }) without bodyParser:false, and register any custom body-size-limit middleware BEFORE rawBody is enabled — or use hookforge's applyRawBodyOnlyTo() escape hatch to scope raw-body capture to just your webhook routes. See ${DOCS_URL}`,
   );
 }
 

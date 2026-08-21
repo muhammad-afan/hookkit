@@ -2,7 +2,7 @@ import type { IdempotencyStore } from '../core/types.js';
 
 /**
  * Add this model to your own schema.prisma. The store below only ever calls
- * `create` and `delete` on it — hookkit never generates or migrates your schema.
+ * `create` and `delete` on it — hookforge never generates or migrates your schema.
  *
  * ```prisma
  * model ProcessedWebhookEvent {
@@ -26,7 +26,7 @@ export interface PrismaIdempotencyDelegate {
 export interface PrismaStoreConfig {
   /**
    * The Prisma model delegate for the table above, e.g. `prisma.processedWebhookEvent`.
-   * hookkit does not import `@prisma/client` — pass your own generated client's delegate,
+   * hookforge does not import `@prisma/client` — pass your own generated client's delegate,
    * whatever you named the model.
    */
   readonly delegate: PrismaIdempotencyDelegate;

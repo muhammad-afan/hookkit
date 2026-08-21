@@ -6,7 +6,7 @@ import { prismaStore } from '../../../src/stores/prisma.js';
  * A fake Prisma delegate that reproduces exactly the two error shapes the store depends
  * on: P2002 (unique constraint violation) from create(), and P2025 (record not found)
  * from delete(). Spinning up a real Postgres via testcontainers for this would mostly
- * be testing Prisma's own generated client, not hookkit's logic — the store's entire
+ * be testing Prisma's own generated client, not hookforge's logic — the store's entire
  * contract is "catch these two error codes correctly," which this fake exercises exactly.
  */
 function fakePrismaDelegate(): PrismaIdempotencyDelegate {

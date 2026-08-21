@@ -1,11 +1,11 @@
 # Security Policy
 
-hookkit is a security-adjacent library — it verifies inbound webhook signatures. Treat
+hookforge is a security-adjacent library — it verifies inbound webhook signatures. Treat
 anything that could weaken that guarantee as a security issue, not a regular bug.
 
 ## Supported versions
 
-hookkit is currently pre-1.0 (`0.x`). Only the latest published `0.x` release is
+hookforge is currently pre-1.0 (`0.x`). Only the latest published `0.x` release is
 supported with security fixes. Once the API stabilizes at `1.0`, this section will be
 updated to track supported major versions individually.
 
@@ -26,7 +26,7 @@ afansaeed19971719@gmail.com with details.
 
 Please include:
 
-- The version of hookkit affected.
+- The version of hookforge affected.
 - Which adapter/store/component is involved.
 - A minimal reproduction (a failing test case is ideal).
 - The impact you believe this has (e.g. "a forged request would pass verification under
@@ -42,9 +42,9 @@ Please include:
   revised timeline rather than going silent.
 - Credit in the advisory and release notes, if you'd like it.
 
-## Threat model — what hookkit does and does not protect against
+## Threat model — what hookforge does and does not protect against
 
-hookkit verifies that a request was signed by a party holding your signing secret (or, for
+hookforge verifies that a request was signed by a party holding your signing secret (or, for
 asymmetric providers, whose private key corresponds to the configured public key), and
 that it falls within the configured replay-tolerance window. **That is the entire
 guarantee.**
@@ -53,16 +53,16 @@ It does **not** protect against:
 
 - **A compromised signing secret.** If your `STRIPE_WEBHOOK_SECRET` (or equivalent) leaks,
   an attacker can forge arbitrarily many validly-signed requests. Secret rotation and
-  storage are your responsibility; hookkit's `additionalSecrets` option only helps you
+  storage are your responsibility; hookforge's `additionalSecrets` option only helps you
   rotate a secret without downtime, not detect that one has leaked.
 - **A compromised provider.** If Stripe's (or any provider's) systems are compromised and
-  used to send genuinely-signed malicious payloads, hookkit will verify them — because
+  used to send genuinely-signed malicious payloads, hookforge will verify them — because
   they really were signed with the real secret. Signature verification proves origin, not
   intent.
-- **Business-logic flaws in your handler.** hookkit's job ends at handing you a verified,
+- **Business-logic flaws in your handler.** hookforge's job ends at handing you a verified,
   deduplicated, parsed payload. What your `onEvent`/`enqueue` handler does with that
   payload — authorization checks, amount validation, idempotent side effects beyond
-  hookkit's own dedupe — is entirely up to your code.
+  hookforge's own dedupe — is entirely up to your code.
 - **A malicious payload that is nonetheless validly signed.** A compromised provider
   account (e.g. an attacker with write access to your Stripe dashboard) could configure
   webhooks with attacker-controlled but validly-signed content. Verification doesn't
@@ -70,7 +70,7 @@ It does **not** protect against:
   secret."
 
 If your threat model requires protecting against any of the above, you need controls
-outside hookkit's scope (secret management, provider account security, handler-level
+outside hookforge's scope (secret management, provider account security, handler-level
 authorization and validation).
 
 ## Security-relevant design commitments
@@ -87,8 +87,8 @@ for how they're maintained:
   escape hatch.
 - **No dynamic code execution** — no `eval`, no `new Function`, no dynamic `require` of
   user-supplied strings.
-- **hookkit does not log anything itself** — there's no built-in logger, so there's no
-  hookkit-owned diagnostic output that could leak a secret. Error messages (`HookkitError`
+- **hookforge does not log anything itself** — there's no built-in logger, so there's no
+  hookforge-owned diagnostic output that could leak a secret. Error messages (`HookkitError`
   subclasses) name the provider and the affected header, never the secret or signature
   value. If you log `HookkitError` instances or request headers yourself, make sure your
   own logging doesn't capture the raw `stripe-signature`/`x-hub-signature-256`/etc. header

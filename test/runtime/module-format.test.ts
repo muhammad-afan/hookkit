@@ -17,7 +17,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 /**
  * `npm pack --json`'s top-level shape changed between major npm versions: npm 10/11
  * output an array (`[{ filename, ... }]`); npm 12+ outputs an object keyed by package
- * name (`{ hookkit: { filename, ... } }`). Handle both rather than assuming one.
+ * name (`{ hookforge: { filename, ... } }`). Handle both rather than assuming one.
  */
 function firstPackResult(jsonOutput: string): { filename: string } {
   const parsed: unknown = JSON.parse(jsonOutput);
@@ -30,31 +30,31 @@ function firstPackResult(jsonOutput: string): { filename: string } {
 // grepping dist/ for a lingering runtime import). These must resolve with ZERO peer
 // packages installed — that's the whole point of the zero-dependency claim.
 const PEERLESS_SUBPATHS = [
-  'hookkit',
-  'hookkit/stripe',
-  'hookkit/shopify',
-  'hookkit/github',
-  'hookkit/standard',
-  'hookkit/slack',
-  'hookkit/discord',
-  'hookkit/twilio',
-  'hookkit/paddle',
-  'hookkit/generic',
-  'hookkit/express',
-  'hookkit/next',
-  'hookkit/fastify',
-  'hookkit/stores/memory',
-  'hookkit/stores/redis',
-  'hookkit/stores/prisma',
-  'hookkit/queues/bullmq',
-  'hookkit/testing',
+  'hookforge',
+  'hookforge/stripe',
+  'hookforge/shopify',
+  'hookforge/github',
+  'hookforge/standard',
+  'hookforge/slack',
+  'hookforge/discord',
+  'hookforge/twilio',
+  'hookforge/paddle',
+  'hookforge/generic',
+  'hookforge/express',
+  'hookforge/next',
+  'hookforge/fastify',
+  'hookforge/stores/memory',
+  'hookforge/stores/redis',
+  'hookforge/stores/prisma',
+  'hookforge/queues/bullmq',
+  'hookforge/testing',
 ];
 
-// hookkit/nestjs is the one subpath that genuinely value-imports its peers
+// hookforge/nestjs is the one subpath that genuinely value-imports its peers
 // (@nestjs/common, @nestjs/core, rxjs — Injectable, Inject, Reflector, RxJS operators
 // are all real runtime code, not type-only), so it's tested separately, WITH those
 // peers installed — the realistic shape of a consumer who actually uses it.
-const NESTJS_SUBPATH = 'hookkit/nestjs';
+const NESTJS_SUBPATH = 'hookforge/nestjs';
 
 let peerlessDir: string;
 let nestjsDir: string;
@@ -65,11 +65,11 @@ beforeAll(() => {
   const { filename } = firstPackResult(packOutput);
   tarballPath = path.join(ROOT, filename);
 
-  peerlessDir = mkdtempSync(path.join(tmpdir(), 'hookkit-pack-peerless-'));
+  peerlessDir = mkdtempSync(path.join(tmpdir(), 'hookforge-pack-peerless-'));
   execFileSync('npm', ['init', '-y'], { cwd: peerlessDir, stdio: 'pipe' });
   execFileSync('npm', ['install', tarballPath, '--no-save'], { cwd: peerlessDir, stdio: 'pipe' });
 
-  nestjsDir = mkdtempSync(path.join(tmpdir(), 'hookkit-pack-nestjs-'));
+  nestjsDir = mkdtempSync(path.join(tmpdir(), 'hookforge-pack-nestjs-'));
   execFileSync('npm', ['init', '-y'], { cwd: nestjsDir, stdio: 'pipe' });
   execFileSync(
     'npm',
@@ -119,7 +119,7 @@ describe('§9/17.15 fresh npm pack install — module format compatibility', () 
   it('the core entry actually exports a working createReceiver function via ESM', () => {
     writeFileSync(
       path.join(peerlessDir, 't2.mjs'),
-      "import { createReceiver } from 'hookkit'; console.log(typeof createReceiver);",
+      "import { createReceiver } from 'hookforge'; console.log(typeof createReceiver);",
     );
     const out = execFileSync('node', ['t2.mjs'], { cwd: peerlessDir }).toString().trim();
     expect(out).toBe('function');
@@ -128,7 +128,7 @@ describe('§9/17.15 fresh npm pack install — module format compatibility', () 
   it('the core entry actually exports a working createReceiver function via CJS', () => {
     writeFileSync(
       path.join(peerlessDir, 't2.cjs'),
-      "console.log(typeof require('hookkit').createReceiver);",
+      "console.log(typeof require('hookforge').createReceiver);",
     );
     const out = execFileSync('node', ['t2.cjs'], { cwd: peerlessDir }).toString().trim();
     expect(out).toBe('function');

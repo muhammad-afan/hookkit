@@ -14,7 +14,7 @@ verifies with, not captured from a real provider delivery. Every fixture's JSON 
 > the signer and the verifier share the same wrong assumption, and every synthetic test
 > still passes.
 
-Concretely, for hookkit today: if `stripe.ts`'s understanding of the signed-payload
+Concretely, for hookforge today: if `stripe.ts`'s understanding of the signed-payload
 construction (`${t}.${body}`) were subtly wrong — wrong separator, wrong field order,
 wrong encoding — `signStripe()` and `verifyStripe()` would both encode that same wrong
 assumption, and the conformance suite would show green while a real Stripe delivery

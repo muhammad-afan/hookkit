@@ -16,7 +16,7 @@ interface MinimalResponse {
 /**
  * Verifies, dedupes, and parses a webhook request before the route handler runs.
  * Registered as a guard (not an interceptor) so it runs before validation pipes,
- * matching hookkit's fail-closed design: an unverified request never reaches
+ * matching hookforge's fail-closed design: an unverified request never reaches
  * application logic at all.
  *
  * On success, attaches `{ event, release, complete }` to the request for
@@ -39,7 +39,7 @@ export class WebhookGuard implements CanActivate {
     );
     if (!providerName) {
       throw new Error(
-        'hookkit: WebhookGuard is active on a route with no @Webhook() metadata. Use @Webhook("providerName") on the handler instead of applying WebhookGuard directly.',
+        'hookforge: WebhookGuard is active on a route with no @Webhook() metadata. Use @Webhook("providerName") on the handler instead of applying WebhookGuard directly.',
       );
     }
 

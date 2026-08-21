@@ -1,4 +1,4 @@
-/** Base class for all hookkit errors. Every error carries a stable machine-readable code. */
+/** Base class for all hookforge errors. Every error carries a stable machine-readable code. */
 export abstract class HookkitError extends Error {
   abstract readonly code: string;
   abstract readonly httpStatus: number;
@@ -24,7 +24,7 @@ export class InvalidSignatureError extends HookkitError {
 
   constructor(provider: string) {
     super(
-      `Signature verification failed for provider "${provider}". The most common cause is that the request body was parsed or re-serialized before hookkit received it — verify() needs the exact raw bytes. See ${docsUrl('invalid_signature')}`,
+      `Signature verification failed for provider "${provider}". The most common cause is that the request body was parsed or re-serialized before hookforge received it — verify() needs the exact raw bytes. See ${docsUrl('invalid_signature')}`,
       provider,
     );
   }
@@ -77,7 +77,7 @@ export class MissingRawBodyError extends HookkitError {
   constructor(message?: string) {
     super(
       message ??
-        `The raw request body was not available — it was likely parsed by another middleware (e.g. express.json()) before hookkit could see the exact bytes. In Express, register express.raw({type:'application/json'}) on this route BEFORE any express.json() middleware. See ${docsUrl('missing_raw_body')}`,
+        `The raw request body was not available — it was likely parsed by another middleware (e.g. express.json()) before hookforge could see the exact bytes. In Express, register express.raw({type:'application/json'}) on this route BEFORE any express.json() middleware. See ${docsUrl('missing_raw_body')}`,
     );
   }
 }
@@ -181,19 +181,19 @@ export class UnknownProviderRouteError extends HookkitError {
   constructor(message?: string) {
     super(
       message ??
-        `hookkit router: no receiver registered for the requested provider. See ${docsUrl('unknown_provider_route')}`,
+        `hookforge router: no receiver registered for the requested provider. See ${docsUrl('unknown_provider_route')}`,
     );
   }
 
   static forKey(providerKey: string, registeredKeys: readonly string[]): UnknownProviderRouteError {
     return new UnknownProviderRouteError(
-      `hookkit router: no receiver registered for "${providerKey}". Registered: [${registeredKeys.join(', ')}]. See ${docsUrl('unknown_provider_route')}`,
+      `hookforge router: no receiver registered for "${providerKey}". Registered: [${registeredKeys.join(', ')}]. See ${docsUrl('unknown_provider_route')}`,
     );
   }
 
   static noKeyGiven(): UnknownProviderRouteError {
     return new UnknownProviderRouteError(
-      `hookkit router: no provider key was given and autoDetect is disabled. Pass the provider key explicitly (e.g. from a /api/webhooks/[provider] path segment) or set autoDetect: true. See ${docsUrl('unknown_provider_route')}`,
+      `hookforge router: no provider key was given and autoDetect is disabled. Pass the provider key explicitly (e.g. from a /api/webhooks/[provider] path segment) or set autoDetect: true. See ${docsUrl('unknown_provider_route')}`,
     );
   }
 }
@@ -206,8 +206,8 @@ export class AmbiguousProviderError extends HookkitError {
   constructor(matchedKeys: readonly string[]) {
     super(
       matchedKeys.length === 0
-        ? `hookkit router: autoDetect could not identify a provider for this request — no registered receiver's required headers were all present. Route explicitly instead (e.g. /api/webhooks/[provider]). See ${docsUrl('ambiguous_provider')}`
-        : `hookkit router: autoDetect found multiple receivers whose required headers all matched this request ([${matchedKeys.join(', ')}]) — refusing to guess. Route explicitly instead, or ensure their header shapes don't overlap. See ${docsUrl('ambiguous_provider')}`,
+        ? `hookforge router: autoDetect could not identify a provider for this request — no registered receiver's required headers were all present. Route explicitly instead (e.g. /api/webhooks/[provider]). See ${docsUrl('ambiguous_provider')}`
+        : `hookforge router: autoDetect found multiple receivers whose required headers all matched this request ([${matchedKeys.join(', ')}]) — refusing to guess. Route explicitly instead, or ensure their header shapes don't overlap. See ${docsUrl('ambiguous_provider')}`,
     );
   }
 }

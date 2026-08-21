@@ -1,6 +1,6 @@
-# Contributing to hookkit
+# Contributing to hookforge
 
-Thanks for considering a contribution. hookkit is a security-adjacent library — verifying
+Thanks for considering a contribution. hookforge is a security-adjacent library — verifying
 webhook signatures — so contributions get held to a slightly higher bar than a typical
 utility package, especially around dependencies and cryptography. This doc explains why,
 and what the path looks like for the two most common kinds of contribution.
@@ -28,7 +28,7 @@ Docker-less environment, not a sign something else is broken.
 
 ## Dependency minimalism is a policy, not a preference
 
-Core (`hookkit`) and every provider adapter ship with **zero runtime dependencies** — see
+Core (`hookforge`) and every provider adapter ship with **zero runtime dependencies** — see
 `CLAUDE.md` §0/§10 for why this is a deliberate competitive and security position, not an
 accident. Concretely:
 
@@ -37,7 +37,7 @@ accident. Concretely:
   the point is dependency *count*, not any particular package's trustworthiness.
 - New integrations with external systems (a new store, a new queue) belong behind an
   **optional peer dependency**, gated with `peerDependenciesMeta: { optional: true }`, so
-  installing hookkit never pulls in Redis/Prisma/BullMQ/NestJS clients for someone who
+  installing hookforge never pulls in Redis/Prisma/BullMQ/NestJS clients for someone who
   isn't using that integration.
 - `devDependencies` are much less sensitive — normal open-source judgment applies there.
 
@@ -56,7 +56,7 @@ providers table and get the full test/fixture treatment. Checklist:
    interface (`verify`, `extractEventId`, `requiredHeaders`, `defaultToleranceSeconds`,
    and `sign` for `createTestSigner` support — see any existing adapter for the pattern).
    Zero imports outside `../core/*`.
-3. **A real, recorded fixture.** hookkit's policy (see `test/fixtures/README.md`) is to
+3. **A real, recorded fixture.** hookforge's policy (see `test/fixtures/README.md`) is to
    never fabricate a fake "real" fixture — a payload recorded from that provider's actual
    test/sandbox mode, with any live secrets redacted, is what's needed. If you can't
    produce one (no account with that provider), say so in the PR; a synthetic-fixture-only
@@ -86,7 +86,7 @@ work.
 
 ## Releasing (maintainers)
 
-hookkit uses [Changesets](https://github.com/changesets/changesets). After a
+hookforge uses [Changesets](https://github.com/changesets/changesets). After a
 merge-worthy change:
 
 ```bash

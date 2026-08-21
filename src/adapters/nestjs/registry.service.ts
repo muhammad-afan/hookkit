@@ -12,8 +12,8 @@ import { HOOKKIT_MODULE_OPTIONS } from './tokens.js';
 import type { HookkitModuleOptions, HookkitProviderConfig } from './types.js';
 
 // No `@Injectable()` / `@Inject()` decorator syntax here — this file is bundled
-// through hookkit's own build, which would need a decorator-helpers runtime package
-// (@oxc-project/runtime) to emit legacy decorators, breaking hookkit's zero-dependency
+// through hookforge's own build, which would need a decorator-helpers runtime package
+// (@oxc-project/runtime) to emit legacy decorators, breaking hookforge's zero-dependency
 // guarantee. Applying the decorator factories as plain function calls produces the
 // identical Reflect metadata NestJS's DI reads — this is the same pattern NestJS's own
 // `mixin()` helper uses internally (see @nestjs/common's injectable.decorator.js).
@@ -28,7 +28,7 @@ export class HookkitRegistry {
     const provider = this.options.providers[name];
     if (!provider) {
       throw new Error(
-        `hookkit: no provider registered for "${name}". Did you add it to HookkitModule.forRootAsync({ providers: { ${name}: ... } })?`,
+        `hookforge: no provider registered for "${name}". Did you add it to HookkitModule.forRootAsync({ providers: { ${name}: ... } })?`,
       );
     }
     return provider;

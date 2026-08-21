@@ -30,7 +30,7 @@ export function hookkitFastifyRawBody(fastify: FastifyInstance): void {
       try {
         done(null, JSON.parse(body.toString('utf8')));
       } catch {
-        // Not valid JSON at the transport layer — hookkit's own parse step will
+        // Not valid JSON at the transport layer — hookforge's own parse step will
         // produce a proper ParseError after signature verification; don't fail here.
         done(null, undefined);
       }
@@ -51,7 +51,7 @@ export function hookkitFastify(
   return async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
     if (!Buffer.isBuffer(request.rawBody)) {
       throw new MissingRawBodyError(
-        "hookkit: request.rawBody was not available. Register hookkitFastifyRawBody(fastify) on this route's scope before hookkitFastify(receiver) — see https://hookkit.dev/errors/missing_raw_body",
+        "hookforge: request.rawBody was not available. Register hookkitFastifyRawBody(fastify) on this route's scope before hookkitFastify(receiver) — see https://hookkit.dev/errors/missing_raw_body",
       );
     }
 

@@ -1,5 +1,5 @@
 {
-  "name": "hookkit",
+  "name": "hookforge",
   "version": "0.1.0",
   "description": "Verify, deduplicate, and process inbound webhooks. Stripe, Shopify, GitHub, Clerk and more. Zero dependencies, works everywhere.",
   "keywords": [

@@ -10,7 +10,7 @@ export interface HookkitModuleAsyncOptions extends Pick<ModuleMetadata, 'imports
 }
 
 /**
- * Registers hookkit's providers, idempotency store, and the `WebhookGuard`/
+ * Registers hookforge's providers, idempotency store, and the `WebhookGuard`/
  * `WebhookLifecycleInterceptor` dependency graph. Global — import it once in
  * `AppModule`; `@Webhook()` works in any feature module without re-importing it.
  *

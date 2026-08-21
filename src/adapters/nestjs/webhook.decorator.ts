@@ -24,7 +24,7 @@ export function Webhook(providerName: string): MethodDecorator {
     SetMetadata(HOOKKIT_PROVIDER_METADATA_KEY, providerName),
     UseGuards(WebhookGuard),
     UseInterceptors(WebhookLifecycleInterceptor),
-    // Nest's default success status for @Post() is 201. hookkit's ReceiverResult always
+    // Nest's default success status for @Post() is 201. hookforge's ReceiverResult always
     // uses 200 for 'processed' across every other adapter — keep NestJS consistent with it.
     HttpCode(200),
   );

@@ -9,7 +9,7 @@ export const WebhookEvent: (...dataOrPipes: unknown[]) => ParameterDecorator = c
     const req = ctx.switchToHttp().getRequest<HookkitHttpRequest>();
     if (!req.hookkitPending) {
       throw new Error(
-        'hookkit: @WebhookEvent() was used on a route without @Webhook(). Add @Webhook("providerName") to the handler.',
+        'hookforge: @WebhookEvent() was used on a route without @Webhook(). Add @Webhook("providerName") to the handler.',
       );
     }
     return req.hookkitPending.event;

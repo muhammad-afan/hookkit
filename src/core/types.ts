@@ -124,7 +124,7 @@ export interface ReceiverConfig<TPayload = unknown> {
   readonly onEvent?: (event: VerifiedEvent<TPayload>) => void | Promise<void>;
 
   /**
-   * Fast-ack mode. When provided, hookkit acks immediately after enqueue
+   * Fast-ack mode. When provided, hookforge acks immediately after enqueue
    * and `onEvent` is NOT called inline.
    */
   readonly enqueue?: (event: VerifiedEvent<TPayload>) => Promise<void>;

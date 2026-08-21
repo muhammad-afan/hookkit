@@ -6,7 +6,7 @@ import type { Receiver } from '../core/types.js';
 /**
  * Express middleware. Requires the raw request body as a Buffer on `req.body` —
  * register `express.raw({ type: 'application/json' })` on this route BEFORE any
- * `express.json()` middleware, or hookkit cannot see the exact signed bytes.
+ * `express.json()` middleware, or hookforge cannot see the exact signed bytes.
  *
  * @example
  * app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), expressWebhook(receiver));

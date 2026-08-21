@@ -19,7 +19,7 @@ const CREDS = { type: 'secret' as const, secret: 'whsec_nestjs_test' };
  * TS legacy decorators. Applying them via `@` syntax here would require
  * `experimentalDecorators: true` project-wide, which this repo deliberately avoids (see
  * the comment in registry.service.ts) because it forces a decorator-helpers runtime
- * package into hookkit's own build. Decorator factories are plain functions, so they're
+ * package into hookforge's own build. Decorator factories are plain functions, so they're
  * applied manually instead — the exact runtime effect is identical.
  */
 function applyClassDecorator<T extends new (...args: never[]) => unknown>(

@@ -10,7 +10,7 @@ const BUDGET_BYTES = 530_000; // ~+17.5% over the measured 451,195 B baseline
 
 // `npm pack --json`'s top-level shape changed between major npm versions: npm 10/11
 // output an array (`[{ unpackedSize, ... }]`); npm 12+ output an object keyed by
-// package name (`{ hookkit: { unpackedSize, ... } }`). Handle both.
+// package name (`{ hookforge: { unpackedSize, ... } }`). Handle both.
 const output = execFileSync('npm', ['pack', '--dry-run', '--json'], { cwd: ROOT }).toString();
 const parsed = JSON.parse(output);
 const { unpackedSize } = Array.isArray(parsed) ? parsed[0] : Object.values(parsed)[0];

@@ -58,9 +58,9 @@ function encodeSignature(bytes: Uint8Array, encoding: GenericEncoding): string {
 }
 
 /**
- * Build-your-own adapter for a provider hookkit doesn't ship yet. Config-driven: you
+ * Build-your-own adapter for a provider hookforge doesn't ship yet. Config-driven: you
  * supply the header shape, algorithm, and exactly how the signed bytes are constructed
- * — hookkit still handles decoding, the HMAC comparison (`subtle.verify`, constant-
+ * — hookforge still handles decoding, the HMAC comparison (`subtle.verify`, constant-
  * time), secret rotation, and (if configured) the replay-tolerance window.
  *
  * Only HMAC-based schemes are supported here — for asymmetric (Ed25519/ECDSA) or
