@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { defaultJsonParse } from '../../src/core/pipeline.js';
 
 /**
- * Internal test plan §10.2. The default JSON parser must never let a signed-but-
+ * hooksentinel-testing.md §10.2. The default JSON parser must never let a signed-but-
  * attacker-influenced payload pollute Object.prototype (or any other prototype) via
  * __proto__ / constructor / prototype keys — at any nesting depth, in any position.
  */

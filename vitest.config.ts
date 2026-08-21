@@ -14,7 +14,7 @@ export default defineConfig({
         lines: 90,
         functions: 90,
         branches: 85,
-        // Internal test plan §12: every uncovered branch in crypto or an adapter is a
+        // hooksentinel-testing.md §12: every uncovered branch in crypto or an adapter is a
         // code path an attacker might reach that's never been observed.
         'src/core/crypto.ts': { lines: 100, functions: 100, branches: 100, statements: 100 },
         'src/providers/*.ts': { branches: 100 },

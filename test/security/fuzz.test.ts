@@ -9,7 +9,7 @@ import { stripe } from '../../src/providers/stripe.js';
 import { createTestSigner } from '../../src/testing/index.js';
 
 /**
- * Internal test plan §10.5. The invariant that matters: for ANY input, verify() either
+ * hooksentinel-testing.md §10.5. The invariant that matters: for ANY input, verify() either
  * returns ok:true with a genuinely valid signature, or ok:false — it never throws, and
  * it never accepts random data. 5,000+ cases run here across the four adapters (well
  * over the documented minimum).

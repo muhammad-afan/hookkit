@@ -7,7 +7,7 @@ Every fixture in this directory (`stripe/`, `github/`, `shopify/`, `standard/`) 
 verifies with, not captured from a real provider delivery. Every fixture's JSON has
 `"synthetic": true` and a `note` field saying so.
 
-The internal test plan (§3.1) is explicit about why this matters and is not a minor gap:
+`hooksentinel-testing.md` §3.1 is explicit about why this matters and is not a minor gap:
 
 > A test suite built only on self-generated signatures proves your code is
 > self-consistent, not that it's correct. If your understanding of a scheme is wrong,
@@ -22,7 +22,7 @@ would fail to verify (or worse, a different wrong assumption could make a forged
 request pass). Nothing in the current suite can catch that class of bug. This is a real,
 open gap, not a formality — closing it requires a live provider account.
 
-## How to close this gap (per the internal test plan §3.2)
+## How to close this gap (per hooksentinel-testing.md §3.2)
 
 For each provider (Stripe, GitHub, Shopify — Standard Webhooks via any of Svix/Clerk/
 Resend/Polar/WorkOS):

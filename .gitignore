@@ -8,7 +8,7 @@ test/fixtures/prisma/generated
 # Local-only project/instructions docs — never tracked. Kept on disk for local
 # reference, deliberately excluded from the public repo and its history.
 CLAUDE.md
-hookkit-testing.md
+hooksentinel-testing.md
 
 # Environment / secrets — never commit these
 .env

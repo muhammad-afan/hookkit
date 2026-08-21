@@ -1,4 +1,4 @@
-// Enforces the "unpacked install size" row of the internal build spec's §10 table — the
+// Enforces the "unpacked install size" row of CLAUDE.md's §10 table — the
 // one size-limit itself can't check, since size-limit measures specific bundled entry
 // points, not the whole published tarball. Budget recalibrated the same way and for the
 // same reason as .size-limit.js — see that file's header comment.
