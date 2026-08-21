@@ -17,7 +17,7 @@ updated to track supported major versions individually.
 ## Reporting a vulnerability
 
 **Do not open a public GitHub issue for a security report.** Use
-[GitHub Private Vulnerability Reporting](https://github.com/muhammad-afan/hookkit/security/advisories/new)
+[GitHub Private Vulnerability Reporting](https://github.com/muhammad-afan/hooksentinel/security/advisories/new)
 on this repository instead — it's enabled for exactly this purpose and keeps the report
 private until a fix ships.
 

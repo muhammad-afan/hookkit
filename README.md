@@ -1,7 +1,7 @@
 # hooksentinel
 
 [![npm version](https://img.shields.io/npm/v/@hooksentinel/core)](https://www.npmjs.com/package/@hooksentinel/core)
-[![CI](https://github.com/muhammad-afan/hookkit/actions/workflows/ci.yml/badge.svg)](https://github.com/muhammad-afan/hookkit/actions/workflows/ci.yml)
+[![CI](https://github.com/muhammad-afan/hooksentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/muhammad-afan/hooksentinel/actions/workflows/ci.yml)
 [![zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)](#bundle-size)
 [![license](https://img.shields.io/npm/l/@hooksentinel/core)](LICENSE)
 

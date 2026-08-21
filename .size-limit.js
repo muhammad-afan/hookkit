@@ -1,5 +1,5 @@
 // Budgets below are recalibrated from actual measured sizes (~+18% headroom), not the
-// pre-implementation guesses in hookkit-build-spec.md §10 (core <3KB, core+stripe <5KB,
+// pre-implementation guesses in the internal build spec §10 (core <3KB, core+stripe <5KB,
 // core+6-providers <12KB, unpacked <150KB). Those numbers were written before any code
 // existed and assumed a lean 4-provider MVP. The shipped surface by end of Week 3 is
 // substantially larger by design, not by accident: 17 error classes each carrying an

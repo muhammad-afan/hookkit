@@ -21,11 +21,11 @@
   "author": "Muhammad Afan",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/muhammad-afan/hookkit.git"
+    "url": "git+https://github.com/muhammad-afan/hooksentinel.git"
   },
   "homepage": "https://hooksentinel.dev",
   "bugs": {
-    "url": "https://github.com/muhammad-afan/hookkit/issues"
+    "url": "https://github.com/muhammad-afan/hooksentinel/issues"
   },
   "type": "module",
   "packageManager": "pnpm@11.10.0",

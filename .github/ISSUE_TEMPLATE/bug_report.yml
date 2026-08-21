@@ -8,7 +8,7 @@ body:
         Thanks for taking the time to report a bug. If this is a **security** issue
         (e.g. a way to forge a valid signature, bypass a replay check, or defeat
         idempotency), please do not file it here — use
-        [Private Vulnerability Reporting](https://github.com/muhammad-afan/hookkit/security/advisories/new)
+        [Private Vulnerability Reporting](https://github.com/muhammad-afan/hooksentinel/security/advisories/new)
         instead. See `SECURITY.md`.
   - type: input
     id: version

@@ -37,7 +37,7 @@ function toJobData<TPayload>(event: VerifiedEvent<TPayload>): BullmqJobData<TPay
 
 /**
  * Wire into `createReceiver`'s `enqueue` option for the fast-ack + async-processing
- * pattern (hookkit-build-spec.md §8): `claim idempotency → enqueue → ack`. If the
+ * pattern (internal build spec §8): `claim idempotency → enqueue → ack`. If the
  * queue.add() call throws, `createReceiver` releases the idempotency claim and returns
  * 503 itself — this function doesn't need to handle that; just let the rejection
  * propagate.

@@ -8,8 +8,8 @@ and what the path looks like for the two most common kinds of contribution.
 ## Development setup
 
 ```bash
-git clone https://github.com/muhammad-afan/hookkit.git
-cd hookkit
+git clone https://github.com/muhammad-afan/hooksentinel.git
+cd hooksentinel
 pnpm install
 pnpm build
 pnpm test

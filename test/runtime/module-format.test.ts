@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 /**
- * hookkit-testing.md §9, test 17.15. Catches the "forgot a file in the `files` array"
+ * Internal test plan §9, test 17.15. Catches the "forgot a file in the `files` array"
  * class of bug that no unit test can — packs the real tarball via `npm pack`, installs
  * it into a fresh scratch project exactly the way a consumer would, and confirms every
  * subpath in package.json's `exports` map actually resolves in both ESM and CJS.

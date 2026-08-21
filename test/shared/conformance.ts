@@ -5,14 +5,14 @@ import type { LoadedFixture } from '../fixtures/loader.js';
 export interface ConformanceOptions {
   /**
    * Real, validly-signed fixtures from OTHER providers. Proves this adapter's verify()
-   * doesn't accidentally accept another provider's header shape (hookkit-testing.md §3.4,
+   * doesn't accidentally accept another provider's header shape (internal test plan §3.4,
    * "rejects a signature from a different provider").
    */
   readonly otherFixtures?: readonly LoadedFixture[];
 }
 
 /**
- * The shared conformance baseline every adapter must pass (hookkit-testing.md §3.4).
+ * The shared conformance baseline every adapter must pass (internal test plan §3.4).
  * Adding a provider means: write the adapter, drop in one fixture, call this. Keeps
  * contributor PRs cheap and keeps every adapter honest against the same bar.
  */

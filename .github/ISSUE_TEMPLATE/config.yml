@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Security vulnerability report
-    url: https://github.com/muhammad-afan/hookkit/security/advisories/new
+    url: https://github.com/muhammad-afan/hooksentinel/security/advisories/new
     about: Do not open a public issue for a security report — use GitHub Private Vulnerability Reporting instead. See SECURITY.md.

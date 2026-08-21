@@ -16,7 +16,7 @@ const CREDS = { type: 'secret' as const, secret: 'whsec_bullmq_test' };
  * hide a real serialization bug (raw bytes are Uint8Array, which does not survive
  * Redis's JSON encoding without the base64 round-trip bullmqQueue/fromBullmqJobData do).
  */
-describe('bullmq queue handoff (hookkit-build-spec.md §8)', () => {
+describe('bullmq queue handoff (internal build spec §8)', () => {
   let container: StartedTestContainer;
   let connection: Redis;
   let queue: Queue;
