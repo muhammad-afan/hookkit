@@ -26,7 +26,7 @@
   },
   "overrides": [
     {
-      "include": ["src/adapters/nestjs/hookkit.module.ts"],
+      "include": ["src/adapters/nestjs/hooksentinel.module.ts"],
       "linter": {
         "rules": {
           "complexity": {

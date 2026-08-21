@@ -10,7 +10,7 @@ import { WebhookEvent } from '../../../../src/adapters/nestjs/webhook-event.deco
  * can only actually run through Nest's real param-resolution pipeline — createParamDecorator
  * factories aren't directly callable outside a request. So this is a full (but minimal)
  * Nest app: a controller with @WebhookEvent() but deliberately NO @Webhook() on the
- * handler, meaning no guard ever sets req.hookkitPending.
+ * handler, meaning no guard ever sets req.hooksentinelPending.
  */
 
 function applyClassDecorator<T extends new (...args: never[]) => unknown>(

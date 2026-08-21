@@ -1,6 +1,6 @@
 import { sha256 } from './crypto.js';
 import { bytesToHex, bytesToUtf8, concatBytes, utf8ToBytes } from './encoding.js';
-import type { HookkitError } from './errors.js';
+import type { HooksentinelError } from './errors.js';
 import { IdempotencyStoreError, ParseError, PayloadTooLargeError } from './errors.js';
 import { enforceMaxBodyBytes } from './request.js';
 import type {
@@ -62,7 +62,7 @@ export type PipelineOutcome<TPayload> =
       readonly complete: () => Promise<void>;
     }
   | { readonly kind: 'duplicate'; readonly eventId: string }
-  | { readonly kind: 'rejected'; readonly error: HookkitError; readonly httpStatus: number };
+  | { readonly kind: 'rejected'; readonly error: HooksentinelError; readonly httpStatus: number };
 
 const noopAsync = async (): Promise<void> => undefined;
 

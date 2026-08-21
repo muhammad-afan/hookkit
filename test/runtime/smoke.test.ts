@@ -1,5 +1,5 @@
 // Bun runtime smoke test — run against the BUILT package (dist/), not source, since this
-// is checking what a real Bun consumer would get after `npm install hookforge`. Run via:
+// is checking what a real Bun consumer would get after `npm install @hooksentinel/core`. Run via:
 //   bun test test/runtime/smoke.test.ts
 // (after `pnpm build`; see .github/workflows/ci.yml's `runtimes` job).
 //

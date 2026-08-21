@@ -1,23 +1,25 @@
 import type { DynamicModule, FactoryProvider, ModuleMetadata } from '@nestjs/common';
 import { Module } from '@nestjs/common';
-import { HookkitRegistry } from './registry.service.js';
-import { HOOKKIT_MODULE_OPTIONS } from './tokens.js';
-import type { HookkitModuleOptions } from './types.js';
+import { HooksentinelRegistry } from './registry.service.js';
+import { HOOKSENTINEL_MODULE_OPTIONS } from './tokens.js';
+import type { HooksentinelModuleOptions } from './types.js';
 
-export interface HookkitModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
+export interface HooksentinelModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
   readonly inject?: FactoryProvider['inject'];
-  readonly useFactory: (...args: never[]) => HookkitModuleOptions | Promise<HookkitModuleOptions>;
+  readonly useFactory: (
+    ...args: never[]
+  ) => HooksentinelModuleOptions | Promise<HooksentinelModuleOptions>;
 }
 
 /**
- * Registers hookforge's providers, idempotency store, and the `WebhookGuard`/
+ * Registers hooksentinel's providers, idempotency store, and the `WebhookGuard`/
  * `WebhookLifecycleInterceptor` dependency graph. Global — import it once in
  * `AppModule`; `@Webhook()` works in any feature module without re-importing it.
  *
  * @example
  * @Module({
  *   imports: [
- *     HookkitModule.forRootAsync({
+ *     HooksentinelModule.forRootAsync({
  *       inject: [ConfigService, REDIS],
  *       useFactory: (config: ConfigService, redis: Redis) => ({
  *         store: redisStore({ client: redis }),
@@ -33,23 +35,23 @@ export interface HookkitModuleAsyncOptions extends Pick<ModuleMetadata, 'imports
  * })
  * export class AppModule {}
  */
-export class HookkitModule {
-  static forRootAsync(options: HookkitModuleAsyncOptions): DynamicModule {
+export class HooksentinelModule {
+  static forRootAsync(options: HooksentinelModuleAsyncOptions): DynamicModule {
     return {
-      module: HookkitModule,
+      module: HooksentinelModule,
       global: true,
       imports: options.imports ?? [],
       providers: [
         {
-          provide: HOOKKIT_MODULE_OPTIONS,
+          provide: HOOKSENTINEL_MODULE_OPTIONS,
           useFactory: options.useFactory,
           inject: options.inject ?? [],
         },
-        HookkitRegistry,
+        HooksentinelRegistry,
       ],
-      exports: [HookkitRegistry],
+      exports: [HooksentinelRegistry],
     };
   }
 }
 
-Module({})(HookkitModule);
+Module({})(HooksentinelModule);

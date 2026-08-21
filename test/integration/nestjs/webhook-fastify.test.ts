@@ -3,7 +3,7 @@ import { Catch, Controller, Module, Post } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { HookkitModule } from '../../../src/adapters/nestjs/hookkit.module.js';
+import { HooksentinelModule } from '../../../src/adapters/nestjs/hooksentinel.module.js';
 import { WebhookEvent } from '../../../src/adapters/nestjs/webhook-event.decorator.js';
 import { Webhook } from '../../../src/adapters/nestjs/webhook.decorator.js';
 import type { VerifiedEvent } from '../../../src/core/types.js';
@@ -84,7 +84,7 @@ async function createApp(options: {
   class AppModule {}
   Module({
     imports: [
-      HookkitModule.forRootAsync({
+      HooksentinelModule.forRootAsync({
         useFactory: () => ({
           store: memoryStore(),
           onHandlerError: options.onHandlerError,

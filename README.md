@@ -1,9 +1,9 @@
-# hookforge
+# hooksentinel
 
-[![npm version](https://img.shields.io/npm/v/hookforge)](https://www.npmjs.com/package/hookforge)
+[![npm version](https://img.shields.io/npm/v/@hooksentinel/core)](https://www.npmjs.com/package/@hooksentinel/core)
 [![CI](https://github.com/muhammad-afan/hookkit/actions/workflows/ci.yml/badge.svg)](https://github.com/muhammad-afan/hookkit/actions/workflows/ci.yml)
 [![zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)](#bundle-size)
-[![license](https://img.shields.io/npm/l/hookforge)](LICENSE)
+[![license](https://img.shields.io/npm/l/@hooksentinel/core)](LICENSE)
 
 Verify, deduplicate, and process inbound webhooks. Stripe, Shopify, GitHub, Clerk
 and more. Zero runtime dependencies, works everywhere — Node, Bun, Deno, Cloudflare
@@ -54,7 +54,7 @@ app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), async (r
 });
 ```
 
-With hookforge:
+With hooksentinel:
 
 ```ts
 const receiver = createReceiver({
@@ -74,17 +74,17 @@ operation, so two concurrent Stripe retries can never both process the same even
 ## Install
 
 ```bash
-npm install hookforge
+npm install @hooksentinel/core
 ```
 
 ## Quickstart (Stripe + Express)
 
 ```ts
 import express from 'express';
-import { createReceiver } from 'hookforge';
-import { stripe } from 'hookforge/stripe';
-import { memoryStore } from 'hookforge/stores/memory';
-import { expressWebhook } from 'hookforge/express';
+import { createReceiver } from '@hooksentinel/core';
+import { stripe } from '@hooksentinel/core/stripe';
+import { memoryStore } from '@hooksentinel/core/stores/memory';
+import { expressWebhook } from '@hooksentinel/core/express';
 
 const receiver = createReceiver({
   adapter: stripe,
@@ -106,9 +106,9 @@ app.listen(3000);
 
 ```ts
 // app/api/webhooks/stripe/route.ts
-import { createReceiver } from 'hookforge';
-import { stripe } from 'hookforge/stripe';
-import { nextWebhook } from 'hookforge/next';
+import { createReceiver } from '@hooksentinel/core';
+import { stripe } from '@hooksentinel/core/stripe';
+import { nextWebhook } from '@hooksentinel/core/next';
 
 const receiver = createReceiver({
   adapter: stripe,
@@ -124,9 +124,9 @@ export const runtime = 'nodejs'; // or 'edge' — both work, no code changes nee
 
 ```ts
 import Fastify from 'fastify';
-import { createReceiver } from 'hookforge';
-import { stripe } from 'hookforge/stripe';
-import { hookkitFastify, hookkitFastifyRawBody } from 'hookforge/fastify';
+import { createReceiver } from '@hooksentinel/core';
+import { stripe } from '@hooksentinel/core/stripe';
+import { hooksentinelFastify, hooksentinelFastifyRawBody } from '@hooksentinel/core/fastify';
 
 const receiver = createReceiver({
   adapter: stripe,
@@ -137,8 +137,8 @@ const receiver = createReceiver({
 const fastify = Fastify();
 // Scoped to a child plugin so it doesn't disable JSON parsing app-wide.
 fastify.register(async (app) => {
-  hookkitFastifyRawBody(app);
-  app.post('/webhooks/stripe', hookkitFastify(receiver));
+  hooksentinelFastifyRawBody(app);
+  app.post('/webhooks/stripe', hooksentinelFastify(receiver));
 });
 ```
 
@@ -150,13 +150,13 @@ parsed.
 
 ```ts
 // app.module.ts
-import { HookkitModule } from 'hookforge/nestjs';
-import { stripe } from 'hookforge/stripe';
-import { redisStore } from 'hookforge/stores/redis';
+import { HooksentinelModule } from '@hooksentinel/core/nestjs';
+import { stripe } from '@hooksentinel/core/stripe';
+import { redisStore } from '@hooksentinel/core/stores/redis';
 
 @Module({
   imports: [
-    HookkitModule.forRootAsync({
+    HooksentinelModule.forRootAsync({
       inject: [ConfigService, REDIS],
       useFactory: (config: ConfigService, redis: Redis) => ({
         store: redisStore({ client: redis }),
@@ -175,7 +175,7 @@ export class AppModule {}
 
 ```ts
 // stripe-webhook.controller.ts
-import { Webhook, WebhookEvent } from 'hookforge/nestjs';
+import { Webhook, WebhookEvent } from '@hooksentinel/core/nestjs';
 
 @Controller('webhooks')
 export class StripeWebhookController {
@@ -195,7 +195,7 @@ const app = await NestFactory.create<NestExpressApplication>(AppModule, { rawBod
 ⚠️ `rawBody: true` silently stops working if you later call
 `app.use(json({ limit: '50mb' }))` to raise the body-size limit — it overrides Nest's
 parser ([nestjs/nest#10471](https://github.com/nestjs/nest/issues/10471)). Use
-`applyRawBodyOnlyTo()` from `hookforge/nestjs` as an escape hatch if you need a custom
+`applyRawBodyOnlyTo()` from `@hooksentinel/core/nestjs` as an escape hatch if you need a custom
 limit on non-webhook routes without breaking this.
 
 ### Hono, Cloudflare Workers, Vercel Edge, Deno
@@ -210,7 +210,7 @@ app.post('/webhooks/:provider', async (c) => receiver.fetch(c.req.raw));
 ## Why not just use the Stripe SDK?
 
 `stripe.webhooks.constructEvent` verifies a signature. That's one provider, and it's
-where the work *stops*. hookforge adds:
+where the work *stops*. hooksentinel adds:
 
 - **Multi-provider** — one interface across Stripe, Shopify, GitHub, and every
   Standard Webhooks-compatible provider (Svix, Clerk, Resend, Polar, WorkOS...).
@@ -222,9 +222,9 @@ where the work *stops*. hookforge adds:
 - **A real test signer** — `createTestSigner` builds validly-signed requests without a
   live provider account, for every supported adapter.
 
-## How hookforge compares
+## How hooksentinel compares
 
-| | hookforge | Tern | Svix (consumer) |
+| | hooksentinel | Tern | Svix (consumer) |
 |---|---|---|---|
 | Multi-provider verification | ✅ 9 providers | ✅ (broader provider list today) | ❌ (Standard Webhooks only) |
 | Idempotency / dedupe | ✅ atomic claim (memory/Redis/Prisma) | ❌ | ❌ |
@@ -234,7 +234,7 @@ where the work *stops*. hookforge adds:
 | Runtime dependencies | 0 | 0 | pulls `standardwebhooks` |
 
 Tern currently supports more providers out of the box — if pure signature verification
-across 19+ platforms is all you need today, it's a fine choice. hookforge's bet is that
+across 19+ platforms is all you need today, it's a fine choice. hooksentinel's bet is that
 idempotency, fast-ack, and framework integration are the parts that actually bite teams
 in production, and that's where it invests.
 
@@ -252,9 +252,9 @@ in production, and that's where it invests.
 | Paddle | `paddle-signature` | HMAC-SHA256, hex | 300s | `event_id` in body |
 | Generic (`createGenericAdapter`) | you configure it | HMAC (sha1/sha256/sha512), hex or base64 | you configure it | you configure it |
 
-¹ **Discord's tolerance is a hookforge addition, not a Discord requirement.** Discord's own
+¹ **Discord's tolerance is a hooksentinel addition, not a Discord requirement.** Discord's own
 verification docs only check the signature, not timestamp freshness — their 3-second
-interaction-response window already makes replay impractical on their end. hookforge
+interaction-response window already makes replay impractical on their end. hooksentinel
 checks it anyway as free defense-in-depth (the timestamp is already inside the signed
 bytes, so enforcing a window costs nothing), using a 60s default rather than the 300s
 used elsewhere in this table: Stripe/Slack/Standard/Paddle can legitimately retry
@@ -268,11 +268,11 @@ PayPal (async network verification) is still on the roadmap.
 ## Idempotency
 
 Every major provider is at-least-once delivery — Stripe *will* send you the same event
-twice. hookforge's idempotency stores dedupe with a single atomic claim (never a
+twice. hooksentinel's idempotency stores dedupe with a single atomic claim (never a
 get-then-set, which is a classic TOCTOU race that lets two concurrent retries both win).
 
 ```ts
-import { memoryStore } from 'hookforge/stores/memory';
+import { memoryStore } from '@hooksentinel/core/stores/memory';
 
 const receiver = createReceiver({
   adapter: stripe,
@@ -295,7 +295,7 @@ multiple processes or instances (multiple ECS tasks, serverless invocations, etc
 ### Redis (multi-instance, in-memory speed)
 
 ```ts
-import { redisStore } from 'hookforge/stores/redis';
+import { redisStore } from '@hooksentinel/core/stores/redis';
 import Redis from 'ioredis';
 
 const receiver = createReceiver({
@@ -311,7 +311,7 @@ server.
 
 ### Prisma (durable, SQL-backed)
 
-Add a model to your own `schema.prisma` — hookforge never generates or migrates it for you:
+Add a model to your own `schema.prisma` — hooksentinel never generates or migrates it for you:
 
 ```prisma
 model ProcessedWebhookEvent {
@@ -322,7 +322,7 @@ model ProcessedWebhookEvent {
 ```
 
 ```ts
-import { prismaStore } from 'hookforge/stores/prisma';
+import { prismaStore } from '@hooksentinel/core/stores/prisma';
 
 const receiver = createReceiver({
   adapter: stripe,
@@ -375,7 +375,7 @@ Providers retry on timeout. The correct production pattern is
 inline before responding:
 
 ```ts
-import { bullmqQueue, bullmqWorkerHandler } from 'hookforge/queues/bullmq';
+import { bullmqQueue, bullmqWorkerHandler } from '@hooksentinel/core/queues/bullmq';
 import { Queue, Worker } from 'bullmq';
 
 const receiver = createReceiver({
@@ -396,14 +396,14 @@ new Worker(
 ```
 
 Ordering is `claim idempotency → enqueue → ack`. If the `queue.add()` call throws,
-hookforge releases the claim and returns 503 itself, so the provider retries — an event is
+hooksentinel releases the claim and returns 503 itself, so the provider retries — an event is
 never acked before it's durably queued.
 
 ## Testing your webhooks
 
 ```ts
-import { createTestSigner } from 'hookforge/testing';
-import { stripe } from 'hookforge/stripe';
+import { createTestSigner } from '@hooksentinel/core/testing';
+import { stripe } from '@hooksentinel/core/stripe';
 
 const signer = createTestSigner(stripe, { type: 'secret', secret: 'whsec_test' });
 const { body, headers } = await signer.sign(JSON.stringify({ id: 'evt_1', type: 'x' }));
@@ -418,9 +418,9 @@ No live provider account, no ngrok tunnel, no manually-computed HMAC in a test f
 
 | Import | Min+gzip | Budget |
 |---|---|---|
-| `hookforge` (core only) | 3.23 kB | 3.8 kB |
-| `hookforge` + `hookforge/stripe` | 5.07 kB | 6 kB |
-| `hookforge` + all 6 MVP providers (Stripe, Shopify, GitHub, Standard Webhooks, Slack, Discord) | 13.15 kB | 15.5 kB |
+| `@hooksentinel/core` (core only) | 3.23 kB | 3.8 kB |
+| `@hooksentinel/core` + `@hooksentinel/core/stripe` | 5.07 kB | 6 kB |
+| `@hooksentinel/core` + all 6 MVP providers (Stripe, Shopify, GitHub, Standard Webhooks, Slack, Discord) | 13.15 kB | 15.5 kB |
 | Unpacked install size (all subpaths, ESM+CJS+types) | 451 kB | 530 kB |
 
 Enforced in CI via `size-limit` (`.size-limit.js`) and `scripts/check-package-size.mjs` —
@@ -429,7 +429,7 @@ how this stays small: no transitive `node_modules` weight, ever.
 
 ## Error handling
 
-Every error hookforge throws or returns is a typed `HookkitError` subclass with a stable
+Every error hooksentinel throws or returns is a typed `HooksentinelError` subclass with a stable
 `code`, an `httpStatus`, and a `retryable` flag:
 
 ```ts
@@ -439,34 +439,34 @@ if (!result.ok) {
 }
 ```
 
-Check `err.code`, not `instanceof` — hookforge ships both ESM and CJS builds, and a
+Check `err.code`, not `instanceof` — hooksentinel ships both ESM and CJS builds, and a
 dual-loaded package can produce two separate class instances.
 
 ## Troubleshooting
 
-Every error message hookforge produces is written to be actionable on its own, but here's
+Every error message hooksentinel produces is written to be actionable on its own, but here's
 every code in one place:
 
 | `code` | HTTP | Retryable | Cause |
 |---|---|---|---|
-| `invalid_signature` | 400 | no | Computed digest didn't match. Usually the body was parsed or re-serialized before hookforge saw it — hookforge needs the *exact* raw bytes. In Express, register `express.raw({type:'application/json'})` on the route **before** any `express.json()` middleware. |
+| `invalid_signature` | 400 | no | Computed digest didn't match. Usually the body was parsed or re-serialized before hooksentinel saw it — hooksentinel needs the *exact* raw bytes. In Express, register `express.raw({type:'application/json'})` on the route **before** any `express.json()` middleware. |
 | `missing_signature_header` | 400 | no | A required header (e.g. `stripe-signature`) was absent. This request doesn't look like a genuine webhook from that provider. |
 | `malformed_signature_header` | 400 | no | The header was present but couldn't be parsed — wrong format, truncated, or from the wrong provider entirely. |
 | `timestamp_out_of_tolerance` | 400 | no | The signed timestamp is outside the replay window. Could be clock skew on your server, or a replayed/captured request. |
-| `missing_raw_body` | 500 | no | hookforge never saw the raw bytes — a misconfiguration in *your* app, not the caller's fault, hence the 500 instead of 400. In NestJS, check both that `rawBody: true` is set on `NestFactory.create` **and** that nothing later (e.g. `app.use(json({limit:'50mb'}))`) overrides it — see [nestjs/nest#10471](https://github.com/nestjs/nest/issues/10471). |
+| `missing_raw_body` | 500 | no | hooksentinel never saw the raw bytes — a misconfiguration in *your* app, not the caller's fault, hence the 500 instead of 400. In NestJS, check both that `rawBody: true` is set on `NestFactory.create` **and** that nothing later (e.g. `app.use(json({limit:'50mb'}))`) overrides it — see [nestjs/nest#10471](https://github.com/nestjs/nest/issues/10471). |
 | `payload_too_large` | 413 | no | Body exceeded `maxBodyBytes` (default 1 MB), rejected before any hashing — this guard exists so HMAC-over-an-unbounded-body can't be used as a CPU amplification vector. |
 | `parse_error` | 400 | no | Signature verified, but the body wasn't valid JSON (or your custom `parse` threw). The signature check passing means the *sender* is who they claim; it says nothing about the body's shape. |
 | `duplicate_event` | 200 | — | Not really an error — the event was already processed and got deduplicated. Always a 200 so the provider doesn't escalate retries into disabling your endpoint. |
 | `idempotency_store_error` | 503 | yes | The idempotency store (Redis/Prisma) was unreachable. 503 so the provider retries rather than risk double-processing with `onStoreError: 'allow'`. |
 | `handler_error` | 500 | yes | Your `onEvent` handler threw. The idempotency claim was released (default `onHandlerError: 'release'`) so the provider's retry will reach your handler again. |
-| `enqueue_error` | 503 | yes | The `enqueue` call (e.g. `bullmqQueue`) failed — the event was never durably queued, so hookforge releases the claim and returns 503 instead of acking. |
+| `enqueue_error` | 503 | yes | The `enqueue` call (e.g. `bullmqQueue`) failed — the event was never durably queued, so hooksentinel releases the claim and returns 503 instead of acking. |
 | `provider_verification_error` | 503 | yes | An async network verification call (e.g. PayPal, once implemented) failed or timed out. |
 | `unknown_provider_route` | 404 | no | `createRouter` got a request for a provider key with no registered receiver, or no key at all with `autoDetect` off. |
 | `ambiguous_provider` | 400 | no | `createRouter`'s `autoDetect` matched zero or multiple receivers and refused to guess — route explicitly instead. |
 
 ## Design decisions worth knowing about
 
-- **`verify()` is async.** hookforge is built entirely on `crypto.subtle` (WebCrypto) so
+- **`verify()` is async.** hooksentinel is built entirely on `crypto.subtle` (WebCrypto) so
   it runs unmodified on Node, Bun, Deno, and every edge runtime — WebCrypto has no
   synchronous API. This differs from `stripe.webhooks.constructEvent`, which is sync.
 - **Fail closed, always.** Any ambiguity — a missing header, an unparseable timestamp,
@@ -489,7 +489,7 @@ highest-leverage contribution path and has a checklist there.
 
 ## Security
 
-hookforge verifies requests; it does not protect against a compromised signing secret, a
+hooksentinel verifies requests; it does not protect against a compromised signing secret, a
 compromised provider account, or business-logic flaws in your own handler. See
 [SECURITY.md](SECURITY.md) for the full threat model and how to report a vulnerability
 (use GitHub Private Vulnerability Reporting, not a public issue).

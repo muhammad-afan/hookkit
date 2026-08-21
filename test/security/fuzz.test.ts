@@ -1,6 +1,6 @@
 import * as fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { HookkitError } from '../../src/core/errors.js';
+import { HooksentinelError } from '../../src/core/errors.js';
 import type { ProviderAdapter, WebhookCredentials } from '../../src/core/types.js';
 import { github } from '../../src/providers/github.js';
 import { shopify } from '../../src/providers/shopify.js';
@@ -40,7 +40,7 @@ describe('§10.5 property-based fuzzing (fast-check)', () => {
           async (body, headers) => {
             const result = await adapter.verify({ body, headers }, credentials);
             expect(result.ok).toBe(false);
-            if (!result.ok) expect(result.error).toBeInstanceOf(HookkitError);
+            if (!result.ok) expect(result.error).toBeInstanceOf(HooksentinelError);
           },
         ),
         { numRuns: 2000 },

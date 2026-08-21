@@ -39,13 +39,13 @@ describe('prismaStore (real Postgres via testcontainers)', () => {
 
   beforeAll(async () => {
     container = await new GenericContainer('postgres:16-alpine')
-      .withEnvironment({ POSTGRES_PASSWORD: 'test', POSTGRES_DB: 'hookkit_test' })
+      .withEnvironment({ POSTGRES_PASSWORD: 'test', POSTGRES_DB: 'hooksentinel_test' })
       .withExposedPorts(5432)
       .start();
 
     const host = container.getHost();
     const port = container.getMappedPort(5432);
-    connectionString = `postgresql://postgres:test@${host}:${port}/hookkit_test`;
+    connectionString = `postgresql://postgres:test@${host}:${port}/hooksentinel_test`;
 
     execFileSync(PRISMA_CLI, ['generate', '--schema=schema.prisma'], {
       cwd: FIXTURE_DIR,

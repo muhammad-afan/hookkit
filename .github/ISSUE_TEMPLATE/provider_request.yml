@@ -7,9 +7,9 @@ body:
       value: |
         See the README's "Supported providers" table for what's currently supported, and
         `CONTRIBUTING.md`'s "Adding a provider" section if you'd like to submit the
-        adapter yourself — it's the highest-leverage contribution path into hookforge.
+        adapter yourself — it's the highest-leverage contribution path into hooksentinel.
 
-        In the meantime, `createGenericAdapter` (`hookforge/generic`) can usually cover a
+        In the meantime, `createGenericAdapter` (`@hooksentinel/core/generic`) can usually cover a
         missing provider immediately without waiting for a release — worth checking
         first.
   - type: input
@@ -30,7 +30,7 @@ body:
     attributes:
       label: Signature shape (if you know it)
       description: |
-        hookforge's adapter interface is deliberately shaped around six distinct signing
+        hooksentinel's adapter interface is deliberately shaped around six distinct signing
         patterns. Knowing which one applies helps scope the work correctly from the
         start.
       options:

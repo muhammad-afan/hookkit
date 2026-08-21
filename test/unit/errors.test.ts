@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   DuplicateEventError,
   HandlerError,
-  HookkitError,
+  HooksentinelError,
   IdempotencyStoreError,
   InvalidSignatureError,
   MalformedSignatureHeaderError,
@@ -14,10 +14,10 @@ import {
   TimestampOutOfToleranceError,
 } from '../../src/core/errors.js';
 
-describe('HookkitError taxonomy', () => {
+describe('HooksentinelError taxonomy', () => {
   it('InvalidSignatureError: 400, non-retryable', () => {
     const err = new InvalidSignatureError('stripe');
-    expect(err).toBeInstanceOf(HookkitError);
+    expect(err).toBeInstanceOf(HooksentinelError);
     expect(err.code).toBe('invalid_signature');
     expect(err.httpStatus).toBe(400);
     expect(err.retryable).toBe(false);
@@ -94,6 +94,6 @@ describe('HookkitError taxonomy', () => {
 
   it('every error message includes a docs URL where applicable', () => {
     const err = new InvalidSignatureError('stripe');
-    expect(err.message).toContain('https://hookkit.dev/errors/invalid_signature');
+    expect(err.message).toContain('https://hooksentinel.dev/errors/invalid_signature');
   });
 });

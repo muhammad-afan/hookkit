@@ -1,3 +1,3 @@
-export const HOOKKIT_MODULE_OPTIONS: symbol = Symbol('HOOKKIT_MODULE_OPTIONS');
-export const HOOKKIT_REGISTRY: symbol = Symbol('HOOKKIT_REGISTRY');
-export const HOOKKIT_PROVIDER_METADATA_KEY: string = 'hookkit:provider';
+export const HOOKSENTINEL_MODULE_OPTIONS: symbol = Symbol('HOOKSENTINEL_MODULE_OPTIONS');
+export const HOOKSENTINEL_REGISTRY: symbol = Symbol('HOOKSENTINEL_REGISTRY');
+export const HOOKSENTINEL_PROVIDER_METADATA_KEY: string = 'hooksentinel:provider';

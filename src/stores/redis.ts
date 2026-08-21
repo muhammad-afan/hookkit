@@ -4,7 +4,7 @@ import type { IdempotencyStore } from '../core/types.js';
 export interface RedisStoreConfig {
   /** An ioredis client (or Cluster) instance. ioredis is an optional peer dependency. */
   readonly client: Redis;
-  /** Prefix applied to every key this store writes. Default: "hookkit:". */
+  /** Prefix applied to every key this store writes. Default: "hooksentinel:". */
   readonly keyPrefix?: string;
 }
 
@@ -16,7 +16,7 @@ export interface RedisStoreConfig {
  * TOCTOU race that lets two concurrent duplicate deliveries both win the claim.
  */
 export function redisStore(config: RedisStoreConfig): IdempotencyStore {
-  const prefix = config.keyPrefix ?? 'hookkit:';
+  const prefix = config.keyPrefix ?? 'hooksentinel:';
   const fullKey = (key: string): string => `${prefix}${key}`;
 
   return {

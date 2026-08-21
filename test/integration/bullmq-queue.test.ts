@@ -28,7 +28,7 @@ describe('bullmq queue handoff (hookkit-build-spec.md §8)', () => {
       port: container.getMappedPort(6379),
       maxRetriesPerRequest: null, // required by BullMQ
     });
-    queue = new Queue('hookkit-test-webhooks', { connection });
+    queue = new Queue('hooksentinel-test-webhooks', { connection });
   }, 60_000);
 
   afterAll(async () => {
@@ -78,7 +78,7 @@ describe('bullmq queue handoff (hookkit-build-spec.md §8)', () => {
       lazyConnect: true,
       retryStrategy: () => null,
     });
-    const brokenQueue = new Queue('hookkit-test-broken', { connection: brokenConnection });
+    const brokenQueue = new Queue('hooksentinel-test-broken', { connection: brokenConnection });
 
     const failingReceiver = createReceiver({
       adapter: stripe,
@@ -115,7 +115,7 @@ describe('bullmq queue handoff (hookkit-build-spec.md §8)', () => {
     const signer = createTestSigner(stripe, CREDS);
     const signed = await signer.sign(JSON.stringify({ id: 'evt_worker_1', type: 'worker_test' }));
 
-    const workerQueue = new Queue('hookkit-test-worker', { connection });
+    const workerQueue = new Queue('hooksentinel-test-worker', { connection });
     await workerQueue.add('webhook', {
       id: 'evt_worker_1',
       provider: 'stripe',
@@ -128,7 +128,7 @@ describe('bullmq queue handoff (hookkit-build-spec.md §8)', () => {
 
     const received: { id?: string; provider?: string } = {};
     const worker = new Worker(
-      'hookkit-test-worker',
+      'hooksentinel-test-worker',
       bullmqWorkerHandler(async (event) => {
         received.id = event.id;
         received.provider = event.provider;

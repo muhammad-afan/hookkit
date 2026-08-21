@@ -1,7 +1,7 @@
 import { MissingRawBodyError } from '../../core/errors.js';
-import type { HookkitHttpRequest } from './types.js';
+import type { HooksentinelHttpRequest } from './types.js';
 
-const DOCS_URL = 'https://hookkit.dev/errors/missing_raw_body';
+const DOCS_URL = 'https://hooksentinel.dev/errors/missing_raw_body';
 
 /**
  * Fires at the first request if `req.rawBody` is missing, naming both documented,
@@ -14,12 +14,12 @@ const DOCS_URL = 'https://hookkit.dev/errors/missing_raw_body';
  *    parser. See https://github.com/nestjs/nest/issues/10471.
  */
 export function assertRawBody(
-  req: HookkitHttpRequest,
-): asserts req is HookkitHttpRequest & { rawBody: Buffer } {
+  req: HooksentinelHttpRequest,
+): asserts req is HooksentinelHttpRequest & { rawBody: Buffer } {
   if (Buffer.isBuffer(req.rawBody)) return;
 
   throw new MissingRawBodyError(
-    `hookforge: req.rawBody was not available on this NestJS request. Two documented causes: (1) \`rawBody: true\` was passed to NestFactory.create() but \`bodyParser: false\` was also set — raw-body capture requires the built-in body parser to remain enabled. (2) a custom \`app.use(json({ limit: '...' }))\` (or similar) was registered AFTER enabling \`rawBody: true\`, which overrides the parser that captures it — see https://github.com/nestjs/nest/issues/10471. Fix: call NestFactory.create(AppModule, { rawBody: true }) without bodyParser:false, and register any custom body-size-limit middleware BEFORE rawBody is enabled — or use hookforge's applyRawBodyOnlyTo() escape hatch to scope raw-body capture to just your webhook routes. See ${DOCS_URL}`,
+    `hooksentinel: req.rawBody was not available on this NestJS request. Two documented causes: (1) \`rawBody: true\` was passed to NestFactory.create() but \`bodyParser: false\` was also set — raw-body capture requires the built-in body parser to remain enabled. (2) a custom \`app.use(json({ limit: '...' }))\` (or similar) was registered AFTER enabling \`rawBody: true\`, which overrides the parser that captures it — see https://github.com/nestjs/nest/issues/10471. Fix: call NestFactory.create(AppModule, { rawBody: true }) without bodyParser:false, and register any custom body-size-limit middleware BEFORE rawBody is enabled — or use hooksentinel's applyRawBodyOnlyTo() escape hatch to scope raw-body capture to just your webhook routes. See ${DOCS_URL}`,
   );
 }
 
@@ -38,7 +38,7 @@ export function applyRawBodyOnlyTo(
   paths: string | string[],
 ): void {
   app.use(paths, (...args: unknown[]) => {
-    const req = args[0] as HookkitHttpRequest & {
+    const req = args[0] as HooksentinelHttpRequest & {
       on: (event: string, cb: (chunk: Buffer) => void) => void;
     };
     const next = args[2] as () => void;

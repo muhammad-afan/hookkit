@@ -122,18 +122,18 @@ async function signDiscord(
 /**
  * Discord (Ed25519 interactions).
  *
- * **The replay-tolerance check is a hookforge addition, not a Discord requirement.**
+ * **The replay-tolerance check is a hooksentinel addition, not a Discord requirement.**
  * Discord's own verification docs only check signature validity — they don't check
  * timestamp freshness at all, because Discord enforces a 3-second interaction-response
  * window on their end: a captured-and-replayed interaction would almost always be
  * rejected as "already acknowledged" or simply be too late to matter, making a
  * timestamp check redundant from Discord's point of view.
  *
- * hookforge checks it anyway, because the timestamp is already part of the signed bytes
+ * hooksentinel checks it anyway, because the timestamp is already part of the signed bytes
  * (`${timestamp}${rawBody}`) — enforcing a window costs nothing extra and closes an
  * otherwise-open door: without it, a captured request could be replayed indefinitely
  * against *your* endpoint, independent of whatever Discord itself does. This is
- * defense-in-depth, not a documented Discord behavior — if you diff hookforge's behavior
+ * defense-in-depth, not a documented Discord behavior — if you diff hooksentinel's behavior
  * against Discord's own docs, this is the difference you're seeing.
  *
  * The default tolerance is 60s, not the 300s convention used by Stripe/Slack/Standard/

@@ -2,9 +2,9 @@ import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { assertRawBody } from './raw-body.js';
-import { HookkitRegistry } from './registry.service.js';
-import { HOOKKIT_PROVIDER_METADATA_KEY } from './tokens.js';
-import type { HookkitHttpRequest } from './types.js';
+import { HooksentinelRegistry } from './registry.service.js';
+import { HOOKSENTINEL_PROVIDER_METADATA_KEY } from './tokens.js';
+import type { HooksentinelHttpRequest } from './types.js';
 
 // `.send()` — not `.json()` — is the method both Express's and Fastify's response
 // objects actually share. Fastify's Reply has no `.json()` at all; `.send()` on both
@@ -16,7 +16,7 @@ interface MinimalResponse {
 /**
  * Verifies, dedupes, and parses a webhook request before the route handler runs.
  * Registered as a guard (not an interceptor) so it runs before validation pipes,
- * matching hookforge's fail-closed design: an unverified request never reaches
+ * matching hooksentinel's fail-closed design: an unverified request never reaches
  * application logic at all.
  *
  * On success, attaches `{ event, release, complete }` to the request for
@@ -24,27 +24,27 @@ interface MinimalResponse {
  * duplicate, it writes the response itself and returns `false`.
  */
 export class WebhookGuard implements CanActivate {
-  private readonly registry: HookkitRegistry;
+  private readonly registry: HooksentinelRegistry;
   private readonly reflector: Reflector;
 
-  constructor(registry: HookkitRegistry, reflector: Reflector) {
+  constructor(registry: HooksentinelRegistry, reflector: Reflector) {
     this.registry = registry;
     this.reflector = reflector;
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const providerName = this.reflector.get<string>(
-      HOOKKIT_PROVIDER_METADATA_KEY,
+      HOOKSENTINEL_PROVIDER_METADATA_KEY,
       context.getHandler(),
     );
     if (!providerName) {
       throw new Error(
-        'hookforge: WebhookGuard is active on a route with no @Webhook() metadata. Use @Webhook("providerName") on the handler instead of applying WebhookGuard directly.',
+        'hooksentinel: WebhookGuard is active on a route with no @Webhook() metadata. Use @Webhook("providerName") on the handler instead of applying WebhookGuard directly.',
       );
     }
 
     const httpContext = context.switchToHttp();
-    const req = httpContext.getRequest<HookkitHttpRequest>();
+    const req = httpContext.getRequest<HooksentinelHttpRequest>();
     const res = httpContext.getResponse<MinimalResponse>();
 
     assertRawBody(req);
@@ -71,7 +71,7 @@ export class WebhookGuard implements CanActivate {
       return false;
     }
 
-    req.hookkitPending = {
+    req.hooksentinelPending = {
       event: outcome.event,
       release: outcome.release,
       complete: outcome.complete,
@@ -81,5 +81,5 @@ export class WebhookGuard implements CanActivate {
 }
 
 Injectable()(WebhookGuard);
-Inject(HookkitRegistry)(WebhookGuard, undefined, 0);
+Inject(HooksentinelRegistry)(WebhookGuard, undefined, 0);
 Inject(Reflector)(WebhookGuard, undefined, 1);

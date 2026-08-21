@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import type { FastifyInstance } from 'fastify';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { hookkitFastify, hookkitFastifyRawBody } from '../../src/adapters/fastify.js';
+import { hooksentinelFastify, hooksentinelFastifyRawBody } from '../../src/adapters/fastify.js';
 import { createReceiver } from '../../src/core/receiver.js';
 import { stripe } from '../../src/providers/stripe.js';
 import { createTestSigner } from '../../src/testing/index.js';
@@ -14,8 +14,8 @@ const CREDS = { type: 'secret' as const, secret: 'whsec_fastify_test' };
 function buildApp(onEvent: (event: unknown) => void): FastifyInstance {
   const app = Fastify();
   const receiver = createReceiver({ adapter: stripe, credentials: CREDS, onEvent });
-  hookkitFastifyRawBody(app);
-  app.post('/webhooks/stripe', hookkitFastify(receiver));
+  hooksentinelFastifyRawBody(app);
+  app.post('/webhooks/stripe', hooksentinelFastify(receiver));
   return app;
 }
 
@@ -26,7 +26,7 @@ afterEach(async () => {
   app = undefined;
 });
 
-describe('hookkitFastify', () => {
+describe('hooksentinelFastify', () => {
   it('processes a validly signed request end-to-end', async () => {
     const onEvent = vi.fn();
     app = buildApp(onEvent);
@@ -64,11 +64,11 @@ describe('hookkitFastify', () => {
     expect(onEvent).not.toHaveBeenCalled();
   });
 
-  it('produces a MissingRawBodyError (500) when hookkitFastifyRawBody was never registered', async () => {
+  it('produces a MissingRawBodyError (500) when hooksentinelFastifyRawBody was never registered', async () => {
     const onEvent = vi.fn();
     const bareApp = Fastify();
     const receiver = createReceiver({ adapter: stripe, credentials: CREDS, onEvent });
-    bareApp.post('/webhooks/stripe', hookkitFastify(receiver));
+    bareApp.post('/webhooks/stripe', hooksentinelFastify(receiver));
 
     const signer = createTestSigner(stripe, CREDS);
     const signed = await signer.sign(JSON.stringify({ id: 'evt_1', type: 'x' }));
@@ -81,7 +81,7 @@ describe('hookkitFastify', () => {
     });
 
     expect(res.statusCode).toBe(500);
-    expect(res.json().message).toContain('hookkitFastifyRawBody');
+    expect(res.json().message).toContain('hooksentinelFastifyRawBody');
     await bareApp.close();
   });
 

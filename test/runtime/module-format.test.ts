@@ -17,7 +17,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 /**
  * `npm pack --json`'s top-level shape changed between major npm versions: npm 10/11
  * output an array (`[{ filename, ... }]`); npm 12+ outputs an object keyed by package
- * name (`{ hookforge: { filename, ... } }`). Handle both rather than assuming one.
+ * name (`{ '@hooksentinel/core': { filename, ... } }`). Handle both rather than assuming one.
  */
 function firstPackResult(jsonOutput: string): { filename: string } {
   const parsed: unknown = JSON.parse(jsonOutput);
@@ -30,31 +30,31 @@ function firstPackResult(jsonOutput: string): { filename: string } {
 // grepping dist/ for a lingering runtime import). These must resolve with ZERO peer
 // packages installed — that's the whole point of the zero-dependency claim.
 const PEERLESS_SUBPATHS = [
-  'hookforge',
-  'hookforge/stripe',
-  'hookforge/shopify',
-  'hookforge/github',
-  'hookforge/standard',
-  'hookforge/slack',
-  'hookforge/discord',
-  'hookforge/twilio',
-  'hookforge/paddle',
-  'hookforge/generic',
-  'hookforge/express',
-  'hookforge/next',
-  'hookforge/fastify',
-  'hookforge/stores/memory',
-  'hookforge/stores/redis',
-  'hookforge/stores/prisma',
-  'hookforge/queues/bullmq',
-  'hookforge/testing',
+  '@hooksentinel/core',
+  '@hooksentinel/core/stripe',
+  '@hooksentinel/core/shopify',
+  '@hooksentinel/core/github',
+  '@hooksentinel/core/standard',
+  '@hooksentinel/core/slack',
+  '@hooksentinel/core/discord',
+  '@hooksentinel/core/twilio',
+  '@hooksentinel/core/paddle',
+  '@hooksentinel/core/generic',
+  '@hooksentinel/core/express',
+  '@hooksentinel/core/next',
+  '@hooksentinel/core/fastify',
+  '@hooksentinel/core/stores/memory',
+  '@hooksentinel/core/stores/redis',
+  '@hooksentinel/core/stores/prisma',
+  '@hooksentinel/core/queues/bullmq',
+  '@hooksentinel/core/testing',
 ];
 
-// hookforge/nestjs is the one subpath that genuinely value-imports its peers
+// @hooksentinel/core/nestjs is the one subpath that genuinely value-imports its peers
 // (@nestjs/common, @nestjs/core, rxjs — Injectable, Inject, Reflector, RxJS operators
 // are all real runtime code, not type-only), so it's tested separately, WITH those
 // peers installed — the realistic shape of a consumer who actually uses it.
-const NESTJS_SUBPATH = 'hookforge/nestjs';
+const NESTJS_SUBPATH = '@hooksentinel/core/nestjs';
 
 let peerlessDir: string;
 let nestjsDir: string;
@@ -65,11 +65,11 @@ beforeAll(() => {
   const { filename } = firstPackResult(packOutput);
   tarballPath = path.join(ROOT, filename);
 
-  peerlessDir = mkdtempSync(path.join(tmpdir(), 'hookforge-pack-peerless-'));
+  peerlessDir = mkdtempSync(path.join(tmpdir(), 'hooksentinel-pack-peerless-'));
   execFileSync('npm', ['init', '-y'], { cwd: peerlessDir, stdio: 'pipe' });
   execFileSync('npm', ['install', tarballPath, '--no-save'], { cwd: peerlessDir, stdio: 'pipe' });
 
-  nestjsDir = mkdtempSync(path.join(tmpdir(), 'hookforge-pack-nestjs-'));
+  nestjsDir = mkdtempSync(path.join(tmpdir(), 'hooksentinel-pack-nestjs-'));
   execFileSync('npm', ['init', '-y'], { cwd: nestjsDir, stdio: 'pipe' });
   execFileSync(
     'npm',
@@ -119,7 +119,7 @@ describe('§9/17.15 fresh npm pack install — module format compatibility', () 
   it('the core entry actually exports a working createReceiver function via ESM', () => {
     writeFileSync(
       path.join(peerlessDir, 't2.mjs'),
-      "import { createReceiver } from 'hookforge'; console.log(typeof createReceiver);",
+      "import { createReceiver } from '@hooksentinel/core'; console.log(typeof createReceiver);",
     );
     const out = execFileSync('node', ['t2.mjs'], { cwd: peerlessDir }).toString().trim();
     expect(out).toBe('function');
@@ -128,7 +128,7 @@ describe('§9/17.15 fresh npm pack install — module format compatibility', () 
   it('the core entry actually exports a working createReceiver function via CJS', () => {
     writeFileSync(
       path.join(peerlessDir, 't2.cjs'),
-      "console.log(typeof require('hookforge').createReceiver);",
+      "console.log(typeof require('@hooksentinel/core').createReceiver);",
     );
     const out = execFileSync('node', ['t2.cjs'], { cwd: peerlessDir }).toString().trim();
     expect(out).toBe('function');
@@ -137,7 +137,7 @@ describe('§9/17.15 fresh npm pack install — module format compatibility', () 
   it(`${NESTJS_SUBPATH} resolves via ESM once its real runtime peers (@nestjs/common, @nestjs/core, rxjs) are installed`, () => {
     writeFileSync(
       path.join(nestjsDir, 'tn.mjs'),
-      `import('${NESTJS_SUBPATH}').then(m => console.log('HookkitModule' in m, typeof m.Webhook));`,
+      `import('${NESTJS_SUBPATH}').then(m => console.log('HooksentinelModule' in m, typeof m.Webhook));`,
     );
     const out = execFileSync('node', ['tn.mjs'], { cwd: nestjsDir }).toString().trim();
     expect(out).toBe('true function');
@@ -146,7 +146,7 @@ describe('§9/17.15 fresh npm pack install — module format compatibility', () 
   it(`${NESTJS_SUBPATH} resolves via CJS once its real runtime peers are installed`, () => {
     writeFileSync(
       path.join(nestjsDir, 'tn.cjs'),
-      `const m = require('${NESTJS_SUBPATH}'); console.log('HookkitModule' in m, typeof m.Webhook);`,
+      `const m = require('${NESTJS_SUBPATH}'); console.log('HooksentinelModule' in m, typeof m.Webhook);`,
     );
     const out = execFileSync('node', ['tn.cjs'], { cwd: nestjsDir }).toString().trim();
     expect(out).toBe('true function');

@@ -1,11 +1,11 @@
-export { HookkitModule } from './hookkit.module.js';
-export type { HookkitModuleAsyncOptions } from './hookkit.module.js';
+export { HooksentinelModule } from './hooksentinel.module.js';
+export type { HooksentinelModuleAsyncOptions } from './hooksentinel.module.js';
 export { applyRawBodyOnlyTo, assertRawBody } from './raw-body.js';
-export { HookkitRegistry } from './registry.service.js';
+export { HooksentinelRegistry } from './registry.service.js';
 export type {
-  HookkitHttpRequest,
-  HookkitModuleOptions,
-  HookkitProviderConfig,
+  HooksentinelHttpRequest,
+  HooksentinelModuleOptions,
+  HooksentinelProviderConfig,
   PendingWebhook,
 } from './types.js';
 export { WebhookEvent } from './webhook-event.decorator.js';

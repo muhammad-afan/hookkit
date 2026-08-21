@@ -1,4 +1,4 @@
-import type { HookkitError } from './errors.js';
+import type { HooksentinelError } from './errors.js';
 
 /** Normalized, framework-agnostic view of the inbound request. */
 export interface WebhookRequest {
@@ -30,7 +30,7 @@ export interface VerifyOptions {
 /** Result of verification. Discriminated union — no exceptions on the happy path. */
 export type VerifyResult =
   | { readonly ok: true; readonly eventId: string | null; readonly timestamp: number | null }
-  | { readonly ok: false; readonly error: HookkitError };
+  | { readonly ok: false; readonly error: HooksentinelError };
 
 /** The adapter contract. Implement once per provider. */
 export interface ProviderAdapter<TCreds extends WebhookCredentials = WebhookCredentials> {
@@ -124,7 +124,7 @@ export interface ReceiverConfig<TPayload = unknown> {
   readonly onEvent?: (event: VerifiedEvent<TPayload>) => void | Promise<void>;
 
   /**
-   * Fast-ack mode. When provided, hookforge acks immediately after enqueue
+   * Fast-ack mode. When provided, hooksentinel acks immediately after enqueue
    * and `onEvent` is NOT called inline.
    */
   readonly enqueue?: (event: VerifiedEvent<TPayload>) => Promise<void>;
@@ -133,7 +133,7 @@ export interface ReceiverConfig<TPayload = unknown> {
   readonly onHandlerError?: 'release' | 'keep';
 
   /** Called on verification/parse failure. For logging and alerting. */
-  readonly onError?: (error: HookkitError, req: WebhookRequest) => void | Promise<void>;
+  readonly onError?: (error: HooksentinelError, req: WebhookRequest) => void | Promise<void>;
 
   /** Called when a duplicate is suppressed. Default behaviour is still 200. */
   readonly onDuplicate?: (eventId: string) => void | Promise<void>;
@@ -143,7 +143,7 @@ export type ReceiverResult =
   | { readonly status: 'processed'; readonly eventId: string; readonly httpStatus: 200 }
   | { readonly status: 'duplicate'; readonly eventId: string; readonly httpStatus: 200 }
   | { readonly status: 'enqueued'; readonly eventId: string; readonly httpStatus: 202 }
-  | { readonly status: 'rejected'; readonly error: HookkitError; readonly httpStatus: number };
+  | { readonly status: 'rejected'; readonly error: HooksentinelError; readonly httpStatus: number };
 
 export interface Receiver<TPayload = unknown> {
   /** Framework-agnostic entry point. Every adapter funnels through this. */

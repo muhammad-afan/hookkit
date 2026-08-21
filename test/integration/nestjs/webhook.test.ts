@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { json } from 'express';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { HookkitModule } from '../../../src/adapters/nestjs/hookkit.module.js';
+import { HooksentinelModule } from '../../../src/adapters/nestjs/hooksentinel.module.js';
 import { WebhookEvent } from '../../../src/adapters/nestjs/webhook-event.decorator.js';
 import { Webhook } from '../../../src/adapters/nestjs/webhook.decorator.js';
 import type { VerifiedEvent } from '../../../src/core/types.js';
@@ -19,7 +19,7 @@ const CREDS = { type: 'secret' as const, secret: 'whsec_nestjs_test' };
  * TS legacy decorators. Applying them via `@` syntax here would require
  * `experimentalDecorators: true` project-wide, which this repo deliberately avoids (see
  * the comment in registry.service.ts) because it forces a decorator-helpers runtime
- * package into hookforge's own build. Decorator factories are plain functions, so they're
+ * package into hooksentinel's own build. Decorator factories are plain functions, so they're
  * applied manually instead — the exact runtime effect is identical.
  */
 function applyClassDecorator<T extends new (...args: never[]) => unknown>(
@@ -88,7 +88,7 @@ async function createApp(options: {
   class AppModule {}
   Module({
     imports: [
-      HookkitModule.forRootAsync({
+      HooksentinelModule.forRootAsync({
         useFactory: () => ({
           store,
           onHandlerError: options.onHandlerError,

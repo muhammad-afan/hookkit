@@ -1,4 +1,4 @@
-import type { HookkitError } from '../../core/errors.js';
+import type { HooksentinelError } from '../../core/errors.js';
 import type {
   IdempotencyStore,
   ProviderAdapter,
@@ -8,14 +8,14 @@ import type {
   WebhookRequest,
 } from '../../core/types.js';
 
-export interface HookkitProviderConfig<TPayload = unknown> {
+export interface HooksentinelProviderConfig<TPayload = unknown> {
   readonly adapter: ProviderAdapter;
   readonly credentials: WebhookCredentials;
   readonly verify?: VerifyOptions | undefined;
   readonly parse?: ((body: Uint8Array) => TPayload | Promise<TPayload>) | undefined;
 }
 
-export interface HookkitModuleOptions {
+export interface HooksentinelModuleOptions {
   /** Shared idempotency store used by every registered provider. Omit to disable dedupe. */
   readonly store?: IdempotencyStore | undefined;
   readonly ttlSeconds?: number | undefined;
@@ -23,9 +23,9 @@ export interface HookkitModuleOptions {
   /** What to do with the idempotency claim when a guarded route handler throws. Default: 'release'. */
   readonly onHandlerError?: ('release' | 'keep') | undefined;
   readonly maxBodyBytes?: number | undefined;
-  readonly providers: Record<string, HookkitProviderConfig>;
+  readonly providers: Record<string, HooksentinelProviderConfig>;
   readonly onError?:
-    | ((error: HookkitError, req: WebhookRequest) => void | Promise<void>)
+    | ((error: HooksentinelError, req: WebhookRequest) => void | Promise<void>)
     | undefined;
 }
 
@@ -37,11 +37,11 @@ export interface PendingWebhook {
 }
 
 /** Structural request shape — deliberately not `express.Request` or `FastifyRequest` so the guard works on both platforms. */
-export interface HookkitHttpRequest {
+export interface HooksentinelHttpRequest {
   rawBody?: Buffer;
   headers: Record<string, string | string[] | undefined>;
   url?: string;
   originalUrl?: string;
   method?: string;
-  hookkitPending?: PendingWebhook;
+  hooksentinelPending?: PendingWebhook;
 }

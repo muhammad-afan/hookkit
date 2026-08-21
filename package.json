@@ -1,5 +1,5 @@
 {
-  "name": "hookforge",
+  "name": "@hooksentinel/core",
   "version": "0.1.0",
   "description": "Verify, deduplicate, and process inbound webhooks. Stripe, Shopify, GitHub, Clerk and more. Zero dependencies, works everywhere.",
   "keywords": [
@@ -23,7 +23,7 @@
     "type": "git",
     "url": "git+https://github.com/muhammad-afan/hookkit.git"
   },
-  "homepage": "https://hookkit.dev",
+  "homepage": "https://hooksentinel.dev",
   "bugs": {
     "url": "https://github.com/muhammad-afan/hookkit/issues"
   },

@@ -1,5 +1,5 @@
-/** Base class for all hookforge errors. Every error carries a stable machine-readable code. */
-export abstract class HookkitError extends Error {
+/** Base class for all hooksentinel errors. Every error carries a stable machine-readable code. */
+export abstract class HooksentinelError extends Error {
   abstract readonly code: string;
   abstract readonly httpStatus: number;
   /** True if the provider retrying could plausibly succeed. */
@@ -14,23 +14,23 @@ export abstract class HookkitError extends Error {
 }
 
 function docsUrl(code: string): string {
-  return `https://hookkit.dev/errors/${code}`;
+  return `https://hooksentinel.dev/errors/${code}`;
 }
 
-export class InvalidSignatureError extends HookkitError {
+export class InvalidSignatureError extends HooksentinelError {
   readonly code = 'invalid_signature';
   readonly httpStatus = 400;
   readonly retryable = false;
 
   constructor(provider: string) {
     super(
-      `Signature verification failed for provider "${provider}". The most common cause is that the request body was parsed or re-serialized before hookforge received it — verify() needs the exact raw bytes. See ${docsUrl('invalid_signature')}`,
+      `Signature verification failed for provider "${provider}". The most common cause is that the request body was parsed or re-serialized before hooksentinel received it — verify() needs the exact raw bytes. See ${docsUrl('invalid_signature')}`,
       provider,
     );
   }
 }
 
-export class MissingSignatureHeaderError extends HookkitError {
+export class MissingSignatureHeaderError extends HooksentinelError {
   readonly code = 'missing_signature_header';
   readonly httpStatus = 400;
   readonly retryable = false;
@@ -43,7 +43,7 @@ export class MissingSignatureHeaderError extends HookkitError {
   }
 }
 
-export class MalformedSignatureHeaderError extends HookkitError {
+export class MalformedSignatureHeaderError extends HooksentinelError {
   readonly code = 'malformed_signature_header';
   readonly httpStatus = 400;
   readonly retryable = false;
@@ -56,7 +56,7 @@ export class MalformedSignatureHeaderError extends HookkitError {
   }
 }
 
-export class TimestampOutOfToleranceError extends HookkitError {
+export class TimestampOutOfToleranceError extends HooksentinelError {
   readonly code = 'timestamp_out_of_tolerance';
   readonly httpStatus = 400;
   readonly retryable = false;
@@ -69,7 +69,7 @@ export class TimestampOutOfToleranceError extends HookkitError {
   }
 }
 
-export class MissingRawBodyError extends HookkitError {
+export class MissingRawBodyError extends HooksentinelError {
   readonly code = 'missing_raw_body';
   readonly httpStatus = 500;
   readonly retryable = false;
@@ -77,12 +77,12 @@ export class MissingRawBodyError extends HookkitError {
   constructor(message?: string) {
     super(
       message ??
-        `The raw request body was not available — it was likely parsed by another middleware (e.g. express.json()) before hookforge could see the exact bytes. In Express, register express.raw({type:'application/json'}) on this route BEFORE any express.json() middleware. See ${docsUrl('missing_raw_body')}`,
+        `The raw request body was not available — it was likely parsed by another middleware (e.g. express.json()) before hooksentinel could see the exact bytes. In Express, register express.raw({type:'application/json'}) on this route BEFORE any express.json() middleware. See ${docsUrl('missing_raw_body')}`,
     );
   }
 }
 
-export class PayloadTooLargeError extends HookkitError {
+export class PayloadTooLargeError extends HooksentinelError {
   readonly code = 'payload_too_large';
   readonly httpStatus = 413;
   readonly retryable = false;
@@ -94,7 +94,7 @@ export class PayloadTooLargeError extends HookkitError {
   }
 }
 
-export class ParseError extends HookkitError {
+export class ParseError extends HooksentinelError {
   readonly code = 'parse_error';
   readonly httpStatus = 400;
   readonly retryable = false;
@@ -108,7 +108,7 @@ export class ParseError extends HookkitError {
   }
 }
 
-export class DuplicateEventError extends HookkitError {
+export class DuplicateEventError extends HooksentinelError {
   readonly code = 'duplicate_event';
   readonly httpStatus = 200;
   readonly retryable = false;
@@ -118,7 +118,7 @@ export class DuplicateEventError extends HookkitError {
   }
 }
 
-export class IdempotencyStoreError extends HookkitError {
+export class IdempotencyStoreError extends HooksentinelError {
   readonly code = 'idempotency_store_error';
   readonly httpStatus = 503;
   readonly retryable = true;
@@ -131,7 +131,7 @@ export class IdempotencyStoreError extends HookkitError {
   }
 }
 
-export class HandlerError extends HookkitError {
+export class HandlerError extends HooksentinelError {
   readonly code = 'handler_error';
   readonly httpStatus = 500;
   readonly retryable = true;
@@ -145,7 +145,7 @@ export class HandlerError extends HookkitError {
   }
 }
 
-export class EnqueueError extends HookkitError {
+export class EnqueueError extends HooksentinelError {
   readonly code = 'enqueue_error';
   readonly httpStatus = 503;
   readonly retryable = true;
@@ -159,7 +159,7 @@ export class EnqueueError extends HookkitError {
   }
 }
 
-export class ProviderVerificationError extends HookkitError {
+export class ProviderVerificationError extends HooksentinelError {
   readonly code = 'provider_verification_error';
   readonly httpStatus = 503;
   readonly retryable = true;
@@ -173,7 +173,7 @@ export class ProviderVerificationError extends HookkitError {
   }
 }
 
-export class UnknownProviderRouteError extends HookkitError {
+export class UnknownProviderRouteError extends HooksentinelError {
   readonly code = 'unknown_provider_route';
   readonly httpStatus = 404;
   readonly retryable = false;
@@ -181,24 +181,24 @@ export class UnknownProviderRouteError extends HookkitError {
   constructor(message?: string) {
     super(
       message ??
-        `hookforge router: no receiver registered for the requested provider. See ${docsUrl('unknown_provider_route')}`,
+        `hooksentinel router: no receiver registered for the requested provider. See ${docsUrl('unknown_provider_route')}`,
     );
   }
 
   static forKey(providerKey: string, registeredKeys: readonly string[]): UnknownProviderRouteError {
     return new UnknownProviderRouteError(
-      `hookforge router: no receiver registered for "${providerKey}". Registered: [${registeredKeys.join(', ')}]. See ${docsUrl('unknown_provider_route')}`,
+      `hooksentinel router: no receiver registered for "${providerKey}". Registered: [${registeredKeys.join(', ')}]. See ${docsUrl('unknown_provider_route')}`,
     );
   }
 
   static noKeyGiven(): UnknownProviderRouteError {
     return new UnknownProviderRouteError(
-      `hookforge router: no provider key was given and autoDetect is disabled. Pass the provider key explicitly (e.g. from a /api/webhooks/[provider] path segment) or set autoDetect: true. See ${docsUrl('unknown_provider_route')}`,
+      `hooksentinel router: no provider key was given and autoDetect is disabled. Pass the provider key explicitly (e.g. from a /api/webhooks/[provider] path segment) or set autoDetect: true. See ${docsUrl('unknown_provider_route')}`,
     );
   }
 }
 
-export class AmbiguousProviderError extends HookkitError {
+export class AmbiguousProviderError extends HooksentinelError {
   readonly code = 'ambiguous_provider';
   readonly httpStatus = 400;
   readonly retryable = false;
@@ -206,8 +206,8 @@ export class AmbiguousProviderError extends HookkitError {
   constructor(matchedKeys: readonly string[]) {
     super(
       matchedKeys.length === 0
-        ? `hookforge router: autoDetect could not identify a provider for this request — no registered receiver's required headers were all present. Route explicitly instead (e.g. /api/webhooks/[provider]). See ${docsUrl('ambiguous_provider')}`
-        : `hookforge router: autoDetect found multiple receivers whose required headers all matched this request ([${matchedKeys.join(', ')}]) — refusing to guess. Route explicitly instead, or ensure their header shapes don't overlap. See ${docsUrl('ambiguous_provider')}`,
+        ? `hooksentinel router: autoDetect could not identify a provider for this request — no registered receiver's required headers were all present. Route explicitly instead (e.g. /api/webhooks/[provider]). See ${docsUrl('ambiguous_provider')}`
+        : `hooksentinel router: autoDetect found multiple receivers whose required headers all matched this request ([${matchedKeys.join(', ')}]) — refusing to guess. Route explicitly instead, or ensure their header shapes don't overlap. See ${docsUrl('ambiguous_provider')}`,
     );
   }
 }

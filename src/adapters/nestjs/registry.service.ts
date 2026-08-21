@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { HookkitError } from '../../core/errors.js';
+import type { HooksentinelError } from '../../core/errors.js';
 import type {
   PipelineIdempotencyConfig,
   PipelineOutcome,
@@ -8,27 +8,27 @@ import type {
 import { defaultJsonParse, runPipeline } from '../../core/pipeline.js';
 import { DEFAULT_MAX_BODY_BYTES, toWebhookRequest } from '../../core/request.js';
 import type { WebhookRequest } from '../../core/types.js';
-import { HOOKKIT_MODULE_OPTIONS } from './tokens.js';
-import type { HookkitModuleOptions, HookkitProviderConfig } from './types.js';
+import { HOOKSENTINEL_MODULE_OPTIONS } from './tokens.js';
+import type { HooksentinelModuleOptions, HooksentinelProviderConfig } from './types.js';
 
 // No `@Injectable()` / `@Inject()` decorator syntax here — this file is bundled
-// through hookforge's own build, which would need a decorator-helpers runtime package
-// (@oxc-project/runtime) to emit legacy decorators, breaking hookforge's zero-dependency
+// through hooksentinel's own build, which would need a decorator-helpers runtime package
+// (@oxc-project/runtime) to emit legacy decorators, breaking hooksentinel's zero-dependency
 // guarantee. Applying the decorator factories as plain function calls produces the
 // identical Reflect metadata NestJS's DI reads — this is the same pattern NestJS's own
 // `mixin()` helper uses internally (see @nestjs/common's injectable.decorator.js).
-export class HookkitRegistry {
-  private readonly options: HookkitModuleOptions;
+export class HooksentinelRegistry {
+  private readonly options: HooksentinelModuleOptions;
 
-  constructor(options: HookkitModuleOptions) {
+  constructor(options: HooksentinelModuleOptions) {
     this.options = options;
   }
 
-  private getProvider(name: string): HookkitProviderConfig {
+  private getProvider(name: string): HooksentinelProviderConfig {
     const provider = this.options.providers[name];
     if (!provider) {
       throw new Error(
-        `hookforge: no provider registered for "${name}". Did you add it to HookkitModule.forRootAsync({ providers: { ${name}: ... } })?`,
+        `hooksentinel: no provider registered for "${name}". Did you add it to HooksentinelModule.forRootAsync({ providers: { ${name}: ... } })?`,
       );
     }
     return provider;
@@ -80,10 +80,10 @@ export class HookkitRegistry {
     return this.options.onHandlerError ?? 'release';
   }
 
-  async reportError(error: HookkitError, req: WebhookRequest): Promise<void> {
+  async reportError(error: HooksentinelError, req: WebhookRequest): Promise<void> {
     await this.options.onError?.(error, req);
   }
 }
 
-Injectable()(HookkitRegistry);
-Inject(HOOKKIT_MODULE_OPTIONS)(HookkitRegistry, undefined, 0);
+Injectable()(HooksentinelRegistry);
+Inject(HOOKSENTINEL_MODULE_OPTIONS)(HooksentinelRegistry, undefined, 0);

@@ -87,7 +87,7 @@ export async function ed25519Verify(
 /**
  * Sign with an Ed25519 private key encoded as PKCS8. Test-signing only — WebCrypto
  * (at least in current Node) does not support importing a raw Ed25519 private key for
- * signing, only PKCS8. See `generateDiscordTestKeyPair()` in `hookforge/discord` for how
+ * signing, only PKCS8. See `generateDiscordTestKeyPair()` in `@hooksentinel/core/discord` for how
  * to produce a compatible keypair.
  */
 export async function ed25519SignWithPkcs8(

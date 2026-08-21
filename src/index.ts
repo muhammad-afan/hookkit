@@ -25,7 +25,7 @@ export type {
 } from './core/types.js';
 
 export {
-  HookkitError,
+  HooksentinelError,
   InvalidSignatureError,
   MissingSignatureHeaderError,
   MalformedSignatureHeaderError,

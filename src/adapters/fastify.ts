@@ -17,11 +17,11 @@ declare module 'fastify' {
  *
  * @example
  * fastify.register(async (app) => {
- *   hookkitFastifyRawBody(app);
- *   app.post('/webhooks/stripe', hookkitFastify(receiver));
+ *   hooksentinelFastifyRawBody(app);
+ *   app.post('/webhooks/stripe', hooksentinelFastify(receiver));
  * });
  */
-export function hookkitFastifyRawBody(fastify: FastifyInstance): void {
+export function hooksentinelFastifyRawBody(fastify: FastifyInstance): void {
   fastify.addContentTypeParser(
     'application/json',
     { parseAs: 'buffer' },
@@ -30,7 +30,7 @@ export function hookkitFastifyRawBody(fastify: FastifyInstance): void {
       try {
         done(null, JSON.parse(body.toString('utf8')));
       } catch {
-        // Not valid JSON at the transport layer — hookforge's own parse step will
+        // Not valid JSON at the transport layer — hooksentinel's own parse step will
         // produce a proper ParseError after signature verification; don't fail here.
         done(null, undefined);
       }
@@ -39,19 +39,19 @@ export function hookkitFastifyRawBody(fastify: FastifyInstance): void {
 }
 
 /**
- * Fastify route handler. Requires `hookkitFastifyRawBody()` to have been registered
+ * Fastify route handler. Requires `hooksentinelFastifyRawBody()` to have been registered
  * first so `request.rawBody` is populated with the exact signed bytes.
  *
  * @example
- * app.post('/webhooks/stripe', hookkitFastify(receiver));
+ * app.post('/webhooks/stripe', hooksentinelFastify(receiver));
  */
-export function hookkitFastify(
+export function hooksentinelFastify(
   receiver: Receiver,
 ): (request: FastifyRequest, reply: FastifyReply) => Promise<void> {
   return async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
     if (!Buffer.isBuffer(request.rawBody)) {
       throw new MissingRawBodyError(
-        "hookforge: request.rawBody was not available. Register hookkitFastifyRawBody(fastify) on this route's scope before hookkitFastify(receiver) — see https://hookkit.dev/errors/missing_raw_body",
+        "hooksentinel: request.rawBody was not available. Register hooksentinelFastifyRawBody(fastify) on this route's scope before hooksentinelFastify(receiver) — see https://hooksentinel.dev/errors/missing_raw_body",
       );
     }
 

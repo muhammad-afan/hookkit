@@ -2,8 +2,8 @@ import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/com
 import { Inject, Injectable } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { catchError, tap, throwError } from 'rxjs';
-import { HookkitRegistry } from './registry.service.js';
-import type { HookkitHttpRequest } from './types.js';
+import { HooksentinelRegistry } from './registry.service.js';
+import type { HooksentinelHttpRequest } from './types.js';
 
 /**
  * Completes or releases the idempotency claim the guard took out, based on whether the
@@ -11,15 +11,15 @@ import type { HookkitHttpRequest } from './types.js';
  * a guard alone can't know the handler's outcome, since guards run before it.
  */
 export class WebhookLifecycleInterceptor implements NestInterceptor {
-  private readonly registry: HookkitRegistry;
+  private readonly registry: HooksentinelRegistry;
 
-  constructor(registry: HookkitRegistry) {
+  constructor(registry: HooksentinelRegistry) {
     this.registry = registry;
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
-    const req = context.switchToHttp().getRequest<HookkitHttpRequest>();
-    const pending = req.hookkitPending;
+    const req = context.switchToHttp().getRequest<HooksentinelHttpRequest>();
+    const pending = req.hooksentinelPending;
     if (!pending) return next.handle();
 
     return next.handle().pipe(
@@ -37,4 +37,4 @@ export class WebhookLifecycleInterceptor implements NestInterceptor {
 }
 
 Injectable()(WebhookLifecycleInterceptor);
-Inject(HookkitRegistry)(WebhookLifecycleInterceptor, undefined, 0);
+Inject(HooksentinelRegistry)(WebhookLifecycleInterceptor, undefined, 0);
