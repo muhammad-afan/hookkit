@@ -9,13 +9,12 @@ Verify, deduplicate, and process inbound webhooks. Stripe, Shopify, GitHub, Cler
 and more. Zero runtime dependencies, works everywhere — Node, Bun, Deno, Cloudflare
 Workers, Vercel Edge.
 
-> **Status: v0.1.0, pre-release.** Core, all 9 provider adapters (Stripe, GitHub,
-> Shopify, Standard Webhooks, Slack, Discord, Twilio, Paddle, and the generic adapter),
-> the memory/Redis/Prisma idempotency stores, BullMQ queue handoff, multi-provider
-> routing, and the Express/Fastify/NestJS/Next.js framework integrations are implemented
-> and tested (422 tests). Not yet published to npm — a docs site, real recorded
-> provider fixtures, and a production deployment are the main things left before a
-> tagged 1.0.
+> **Status: v0.1.0, published.** Live on npm as
+> [`@hooksentinel/core`](https://www.npmjs.com/package/@hooksentinel/core). Core, all 9
+> provider adapters (Stripe, GitHub, Shopify, Standard Webhooks, Slack, Discord, Twilio,
+> Paddle, and the generic adapter), the memory/Redis/Prisma idempotency stores, BullMQ
+> queue handoff, multi-provider routing, and the Express/Fastify/NestJS/Next.js framework
+> integrations are implemented and tested (446 tests).
 
 ## The problem
 
@@ -492,7 +491,9 @@ highest-leverage contribution path and has a checklist there.
 hooksentinel verifies requests; it does not protect against a compromised signing secret, a
 compromised provider account, or business-logic flaws in your own handler. See
 [SECURITY.md](SECURITY.md) for the full threat model and how to report a vulnerability
-(use GitHub Private Vulnerability Reporting, not a public issue).
+(use GitHub Private Vulnerability Reporting, not a public issue). All Socket.dev alerts
+are in optional peer dependencies (Fastify, Prisma, BullMQ) or dev dependencies —
+`@hooksentinel/core` itself has zero runtime dependencies.
 
 ## License
 
