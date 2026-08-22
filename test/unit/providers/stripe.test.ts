@@ -21,6 +21,8 @@ runAdapterConformance(stripe, loadFixture('stripe', 'checkout-completed'), {
   ],
 });
 
+runAdapterConformance(stripe, loadFixture('stripe', 'payment-intent-created'));
+
 describe('stripe adapter', () => {
   it('accepts a validly signed request', async () => {
     const signer = createTestSigner(stripe, CREDS);
